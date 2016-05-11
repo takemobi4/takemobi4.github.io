@@ -1,0 +1,111 @@
+<div>
+    <div class="search-bar">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1 class="filter-bar">Trip Targets</h1>
+            <div class="range-filter">
+                <label class="label-text">Leave by:</label><label class="label-data leave-by-disp"></label>
+                <input type="range" min="0" max="24" value="12" step=".5" data-display="leave-by-disp" data-display-type="hours" class="leave-by">
+            </div>        
+            <div class="range-filter">
+                <label class="label-text">Arrive:</label><label class="label-data arrive-by-disp"></label>
+                <input type="range" min="0" max="24" value="13" step=".5" data-display="arrive-by-disp" data-display-type="hours" class="arrive-by">
+            </div>       
+            <div class="range-filter">
+                <label class="label-text">Walking:</label><label class="label-data walking-time-disp"></label>
+                <input type="range" min="0" max="20" value="5" data-display="walking-time-disp" data-display-type="minutes" class="walking-time">
+            </div>        
+            <div class="range-filter">
+                <label class="label-text">Max Cost:</label><label class="label-data max-cost-disp"></label>
+                <input type="range" min="0" max="15" value="5" step=".5" data-display="max-cost-disp" data-display-type="money" class="max-cost">
+            </div>        
+            <h1 class="filter-bar">Modes</h1>
+            <div class="bubble-option-list">                
+                <div class="mode-filter">
+                    <span class="fa-stack bicycle fa-lg">
+                    <i class="fa fa-circle bicycle fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Bike</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack train fa-lg">
+                    <i class="fa fa-circle train fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Train</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack car fa-lg">
+                    <i class="fa fa-circle car fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Car</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack walk fa-lg">
+                    <i class="fa fa-circle walk fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Walk</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack bus fa-lg">
+                    <i class="fa fa-circle bus fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Bus</span>
+                </div>
+            </div>            
+            <h1 class="filter-bar">Simulate</h1>
+            <div class="bubble-option-list">               
+                <div class="mode-filter">
+                    <span class="fa-stack rain fa-lg">
+                    <i class="fa fa-circle rain fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Rain</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack snow fa-lg">
+                    <i class="fa fa-circle snow fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Snow</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack sleet fa-lg">
+                    <i class="fa fa-circle sleet fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Sleet</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack ice fa-lg">
+                    <i class="fa fa-circle ice fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Ice</span>
+                </div>
+                <div class="mode-filter">
+                    <span class="fa-stack cold fa-lg">
+                    <i class="fa fa-circle cold fa-stack-2x"></i>
+                    <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="mode-name">Cold</span>
+                </div>
+            </div>
+            <h1 class="filter-bar"><a href="#user">Profile</a></h1>
+            <div class="filter-bar cc-id">                    
+                <i class="fa fa-cc-amex amex"></i>
+                <i class="fa fa-cc-mastercard mastercard"></i>
+                <i class="fa fa-cc-paypal paypal"></i>
+                <i class="fa fa-cc-visa visa"></i>
+            </div>
+        </div>
+    </div>
+    <div class="map-area">
+        <div id="search-map" class="map">
+        </div>
+    </div>    
+</div>

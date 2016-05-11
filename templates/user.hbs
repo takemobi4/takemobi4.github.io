@@ -1,0 +1,279 @@
+<div class="page-container">
+    <div class="two-col">
+        <div class="col">
+            <div class="user-desc block">
+                <h1>Welcome, {{USERNAME}}</h1>
+                <div class="pull-right">
+                    <a href="#questions" class="button">20/20 Questions</a>
+                    <a href="#" class="button">Book a Trip</a>
+                </div>
+            </div>
+            <div class="block bg">
+                <div class="block-head">
+                    <h2 class="block-title">Key Locations</h2>
+                    <p class="pull-right">Click the map to add one!</p>
+                </div>
+                <div class="container-fluid">
+                    <div class="row map-container">
+                        <div id="key-locations-map" class="map key-locations">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block bg">
+                <div class="block-head">
+                    <h2 class="block-title">Trip History</h2>
+                    <button class="edit block-modifier">Edit</button>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 coming-soon">
+                            No trips yet!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="block block-span bg">
+                <div class="block-head">
+                    <h2 class="block-title">Money</h2>
+                </div>
+                <div class="container-fluid">
+                    <div class="row chart-container">
+                        <div class="col-xs-9">        
+                            <div class="chart">                        
+                                <canvas id="moneyChart" class="user-chart" height="200"></canvas>
+                            </div>    
+                        </div>
+                        <div class="col-xs-3 button-area">
+                            <button class="spent"><span>$</span><span class="text"></span> Spent</button>                             
+                            <button class="saved"><span>$</span><span class="text"></span> Saved</button>                               
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div class="block block-span bg">
+                <div class="block-head">
+                    <h2 class="block-title">Time</h2>
+                </div>
+                <div class="container-fluid">
+                    <div class="row chart-container">
+                        <div class="col-xs-9">        
+                            <div class="chart">                        
+                                <canvas id="timeChart" class="user-chart" height="200"></canvas>
+                            </div>    
+                        </div>
+                        <div class="col-xs-3 button-area">
+                            <button class="spent"><span class="text"></span> <sup>hrs</sup> Spent</button>                             
+                            <button class="saved"><span class="text"></span> <sup>hrs</sup> Saved</button>                               
+                        </div>
+                    </div>
+                </div>              
+            </div>
+            <div class="block block-span bg">
+                <div class="block-head">
+                    <h2 class="block-title">GHGs</h2>
+                </div>
+                <div class="container-fluid">
+                    <div class="row chart-container">
+                        <div class="col-xs-9">        
+                            <div class="chart">                        
+                                <canvas id="ghgChart" class="user-chart" height="200"></canvas>
+                            </div>    
+                        </div>
+                        <div class="col-xs-3 button-area">
+                            <button class="spent"><span class="text"></span> CO<sub>2</sub> Spent</button>                             
+                            <button class="saved"><span class="text"></span> CO<sub>2</sub> Saved</button>                               
+                        </div>
+                    </div>
+                </div>              
+            </div>
+        </div>
+    </div>
+    <div class="one-col">
+        <div class="col">
+            <div class="block bg mode-area">
+                <div class="block-head">
+                    <h2 class="block-title">Modes</h2>
+                    <button type="button" class="add block-modifier" data-toggle="modal" data-target="#mode-modal">+  Add</button>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Rocket</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle rocket fa-stack-2x"></i>
+                    <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Car</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle car fa-stack-2x"></i>
+                    <i class="fa fa-car fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Bus</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle bus fa-stack-2x"></i>
+                    <i class="fa fa-bus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Bicycle</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle bicycle fa-stack-2x"></i>
+                    <i class="fa fa-bicycle fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Taxi</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle taxi fa-stack-2x"></i>
+                    <i class="fa fa-taxi fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Train</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle train fa-stack-2x"></i>
+                    <i class="fa fa-train fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode">
+                    <span class="mode-name">Subway</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle subway fa-stack-2x"></i>
+                    <i class="fa fa-subway fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode car-mode {{#if ALLOWDRIVING}}{{else}} disabled{{/if}}>
+                    <span class="mode-name">Car</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle car fa-stack-2x"></i>
+                    <i class="fa fa-car fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode motorcycle-mode {{#if ALLOWMOTORCYCLE}}{{else}} disabled{{/if}}>
+                    <span class="mode-name">Motorcycle</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle motorcycle fa-stack-2x"></i>
+                    <i class="fa fa-motorcycle fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode bicycle-mode {{#if ALLOWBIKING}}{{else}} disabled{{/if}}>
+                    <span class="mode-name">Bicycle</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle bicycle fa-stack-2x"></i>
+                    <i class="fa fa-bicycle fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="mode scooter-mode {{#if ALLOWSCOOTER}}{{else}} disabled{{/if}}">
+                    <span class="mode-name">Scooter</span>
+                    <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle scooter fa-stack-2x"></i>
+                    <i class="fa fa-bullseye fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="two-col">
+        <div class="col">
+            <div class="block bg">
+                <div class="block-head">
+                    <h2 class="block-title">Payments</h2>
+                    <button class="add block-modifier">+ Add</button>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 coming-soon">
+                            Coming soon!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <div class="col">
+            <div class="block bg">
+                <div class="block-head">
+                    <h2 class="block-title">Memberships</h2>
+                    <button type="button" class="add block-modifier" data-toggle="modal" data-target="#membership-modal">+  Add</button>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12  {{#if HASNOMEMBERSHIPS}}coming-soon{{/if}} membership-list">
+                            {{#if HASNOMEMBERSHIPS}}
+                                <p class="no-memberships">No memberships yet, add one above.</p>
+                            {{/if}}
+                            {{#if HASCHARLIEPASS}}
+                                <div class="membership">
+                                    <p>MBTA</p>
+                                </div>
+                            {{/if}}
+                            {{#if HASCHARLIECARD}}
+                                <div class="membership">
+                                    <p>Charlie Card</p>
+                                </div>
+                            {{/if}}
+                            {{#if HASHUBWAYMEMBERSHIP}}
+                                <div class="membership">
+                                    <p>Hubway</p>
+                                </div>
+                            {{/if}}
+                            {{#if HASZIPCARPLAN10}}
+                                <div class="membership">
+                                    <p>Zipcar</p>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ <div id="mode-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Choose A Type To Add</h4>
+      </div>
+      <div class="modal-body">
+        <select class="mode-type">
+            <option>Car</option>
+            <option>Motorcycle</option>
+            <option>Bicycle</option>
+            <option>Scooter</option>
+         </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+ <div id="membership-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Choose A Membership Type To Add</h4>
+      </div>
+      <div class="modal-body">
+        <select class="membership-type">
+            <option>Zipcar</option>
+            <option>Hubway</option>
+            <option>MBTA</option>
+            <option>Charlie Card</option>
+         </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary submit-membership" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+{
+    "API_URL": {
+        "BASE": "http://api.takemobi.com:8080/",
+        "CREATE_ACCOUNT": "profilemanager/V2/Authentication/CreateUser",
+        "LOGIN": "profilemanager/V2/Authentication/Login"
+    }
+}

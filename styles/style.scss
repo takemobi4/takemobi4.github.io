@@ -1,0 +1,416 @@
+$el-bg: #ccc;
+$text:#333;  
+$font-fam: Arial, sans;
+$font-md: 18px;
+
+//Transport 
+
+$bicycle:  #33CCCC; 
+$car: #3366CC;
+$train: #660066;
+$walk:  #FF0066;
+$rocket: #AA0022;
+$bus:   #FF6633;
+$taxi:  #FF9900;
+$subway: #000;
+$scooter: #bbcc44;
+
+//Stats
+
+$saved: #CCFF00;
+$spent: #99CCFF;
+
+//Weather
+
+$rain:      #99FFCC;
+$snow:      #6699CC;
+$sleet:     #9999FF;
+$ice:       #CC66CC;
+$cold:      #9966CC;
+
+$visa:          #0157a2;
+$mastercard:    #0a3a82;
+$paypal:        #253b80;
+$amex:          #007bc1;
+
+
+*{
+    font-family:$font-fam;
+    box-sizing:border-box;
+}
+
+body{
+    padding:0;
+    margin:0;
+}
+
+h2, button, a.button{
+    font-size:$font-md;
+    color:$text;
+    font-weight:normal;
+}
+
+button, .button{
+    padding:5px 10px;
+    border:none;
+    background-color:white;
+    text-decoration:none;
+}
+
+.coming-soon{
+    width:100%;
+    height:159px;
+    background:#222;
+    font-weight:bold;
+    opacity:.7;
+    text-align:center;
+    padding:50px;
+    color:white;
+}
+
+.block{
+    width: 100%;
+    float: left;
+    min-height: 120px;
+    position:relative;
+    margin-bottom:20px;
+    padding-top: 80px;
+    &.block-span{
+        margin-bottom:0px;
+    }
+    &.bg{        
+        background:$el-bg;
+    }
+    .block-head{
+        position: absolute;
+        top: 20px;
+        left: 0;
+        padding: 0 20px 0 0;
+        width: 100%;
+    }
+    .block-title{
+        float: left;
+        background: white;
+        padding: 10px;
+        margin:0;
+    }
+    .block-modifier{
+        float: right;
+        background: white;
+        padding: 10px; 
+        margin:0;       
+    }
+}
+
+.app-container{
+    width:100%;
+    display:block;
+    overflow: auto;
+}
+
+.col{
+    float:left;
+    padding:20px;
+}    
+
+.one-col{
+    width:100%;
+    float:left;
+    .col{
+        width:100%;
+    }    
+}
+
+.two-col{
+    float:left;
+    width:100%;
+    .col{
+        width:50%;
+    }
+}
+
+//login view
+
+.login-view{
+    margin:0;
+    background-color:$el-bg;
+    height: 100vh;
+    width: 100vw;
+}
+
+.login{
+    width: 400px;
+    margin: auto; 
+    margin-top: 100px;   
+    position:absolute;
+    left:50%;
+    margin-left:-200px;
+}
+
+//mobi colors + modes
+
+.visa{
+    color:$visa;
+}
+.mastercard{
+    color:$mastercard;
+}
+.paypal{
+    color:$paypal;
+}
+.amex{
+    color:$amex;
+}
+
+i, span{
+    &.rain{
+        color:$rain;
+    }
+    &.sleet{
+        color:$sleet;
+    }
+    &.snow{
+        color:$snow;
+    }
+    &.ice{
+        color:$ice;
+    }
+    &.cold{
+        color:$cold;
+    }
+    &.car{
+        color:$car;
+    }
+    &.bicycle{
+        color:$bicycle;
+    }
+    &.rocket{
+        color:$rocket;
+    }
+    &.taxi{
+        color:$taxi;
+    }
+    &.bus{
+        color:$bus;
+    }
+    &.walk{
+        color:$walk;
+    }
+    &.train{
+        color:$train;
+    }
+    &.subway{
+        color:$subway;
+    }
+    &.scooter{
+        color:$scooter;
+    }
+}
+
+.mode{
+    float: left;
+    font-size: 24px;
+    margin: 0 12px 10px 12px;
+    .mode-name{
+        font-size: 13px;
+        text-align: center;
+        width: 100%;
+        display: block;
+        text-transform: uppercase;
+    }
+    &.disabled{
+        .fa-circle{
+            color:#888;
+        }
+    }
+}
+
+//user question view
+
+.question-view{    
+    height: 100vh;
+    width: 100vw;
+    .question-view-container{            
+        position: relative;
+        margin: auto;
+        width: 700px;
+        margin-top: 150px;
+        border-radius: 10px;
+        background: #333;
+        padding: 30px;
+    }
+    .submit{            
+        display: block;
+        margin-top: 20px;
+    }
+}
+
+//user view
+ 
+.user-view{
+    background-image: url('../../img/user-pattern.jpg');
+    .page-container{
+        max-width:900px;
+        margin:auto;
+    }
+    h1{
+        color:white;
+    }
+    .map{
+        height: 300px;
+        width: 100%;
+    }
+    .chart-container{
+        .chart{
+            height:200px;
+        }
+        .button-area{
+            display:none;
+            padding:0;
+            button{
+                font-size:12px;
+                width:100%;
+                font-weight:bold;
+                padding:5px;
+                margin-bottom:5px;
+            }
+            .spent{
+                background-color:$spent;
+            }
+            .saved{
+                background-color:$saved
+            }
+        }
+    }
+    .mode-area{
+        padding-bottom:20px;
+    }
+} 
+
+.membership{
+    p{
+        font-weight: bold;
+        text-align: center;
+        border-top: 1px solid $text;
+        padding: 10px;
+    }
+}
+
+
+//search view
+.search-view{    
+    height:100vh;
+    width:100vw;
+}
+
+#search-map{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:100%;
+    height:100%;
+}
+
+.search-bar{
+    height:100vh;
+    width:300px;
+    position:relative;
+    overflow-y:auto;
+    color:$text;
+    padding:25px;
+    float:left;
+    .overlay{        
+        opacity: .8;
+        background:white;
+        height:100%;
+        width:100%;
+        position:absolute;
+        left:0;
+        top:0;       
+        z-index: 1; 
+    }
+    .content{            
+        z-index: 1;
+        position: relative;
+    }
+    .filter-bar{        
+        text-align: center;
+        padding:15px;
+        background:white;
+        float: left;
+        width: 100%;
+    }
+    input[type="range"]{            
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .cc-id{
+        text-align:center;
+        i{
+            width:20%;
+            font-size:20px;
+        }
+    }
+    .range-filter{
+        margin:10px 0;
+    }
+    .label-data{
+        float:right;
+    }
+}
+
+.mode-filter{
+    float:left;
+    width:20%;
+    text-align:center;
+    cursor:pointer;
+    &:not(.selected){
+        .fa-stack-2x{
+            color:$el-bg !important;            
+        }
+    }
+    &.selected{
+        .fa-inverse{
+            color:inherit;
+        }
+    }
+    .mode-name{
+        float:left;
+        width:100%;
+    }
+    .fa-stack{
+        font-size:18px;
+    }
+}
+
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #222;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #666;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #222;
+}
