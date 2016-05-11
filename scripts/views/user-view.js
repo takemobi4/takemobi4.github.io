@@ -107,7 +107,7 @@ var mockProfileData = {
                 if(response.ERROR){
                     return window.location.hash = 'login';                        
                 }
-                if(!response.HASCHARLIECARD f&& !response.HASCHARLIEPASS && !response.HASHUBWAYMEMBERSHIP && !response.HASZIPCARPLAN10){
+                if(!response.HASCHARLIECARD && !response.HASCHARLIEPASS && !response.HASHUBWAYMEMBERSHIP && !response.HASZIPCARPLAN10){
                     response.HASNOMEMBERSHIPS = true;
                 }
                 that.renderView(el, response, that);
