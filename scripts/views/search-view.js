@@ -9,6 +9,7 @@ var app = app || {};
         initialize: function() {
             $("body").html(this.el);
             this.render();
+            this.markers = [];
         },
         render: function() {
             var el = this.$el;
@@ -25,17 +26,36 @@ var app = app || {};
             this.$el.addClass('search-view');
             this.$el.addClass('app-container');
         },
-        plotCurrentLocation: function(map) {
+        plotCurrentLocation: function(that, map) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var currLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                     map.setCenter(currLocation);
+                    that.plotMBTAStops(that, map, position.coords.latitude, position.coords.longitude);
+                    that.plotZipCars(that, map, position.coords.latitude, position.coords.longitude);
+                    that.plotHubway(that, map, position.coords.latitude, position.coords.longitude);
+                    map.addListener('bounds_changed', function() {
+                        var cachedLat = map.getCenter().lat();
+                        var cachedLon = map.getCenter().lng();                        
+                        window.setTimeout(function() {
+                            var mapPos = map.getCenter();
+                            if(mapPos.lat() == cachedLat && mapPos.lng() == cachedLon){                                
+                                for (var i = 0; i < that.markers.length; i++) {
+                                    that.markers[i].setMap(null);
+                                }
+                                that.markers = [];
+                                that.plotZipCars(that, map, mapPos.lat(), mapPos.lng());           
+                                that.plotHubway(that, map, mapPos.lat(), mapPos.lng());           
+                                that.plotMBTAStops(that, map, mapPos.lat(), mapPos.lng());                                
+                            }
+                        }, 500);
+                    });
                 });
             }
         },
         setMaps: function(that){       
             var searchMap = new google.maps.Map(document.getElementById('search-map'), {
-                zoom: 12,
+                zoom: 14,
                 streetViewControl: false,
                 mapTypeControl: false
             });                              
@@ -45,7 +65,64 @@ var app = app || {};
             var arrivalAC = new google.maps.places.Autocomplete(arrivalInput);
             departureAC.bindTo('bounds', searchMap);      
             arrivalAC.bindTo('bounds', searchMap);
-            that.plotCurrentLocation(searchMap);        
+            that.plotCurrentLocation(that, searchMap);        
+        },
+        getRadius: function(map){
+            var bounds = map.getBounds();
+            if(!bounds){
+                return 4;
+            }
+            var center = bounds.getCenter();
+            var ne = bounds.getNorthEast();
+            var r = 3963.0;  
+            var lat1 = center.lat() / 57.2958; 
+            var lon1 = center.lng() / 57.2958;
+            var lat2 = ne.lat() / 57.2958;
+            var lon2 = ne.lng() / 57.2958;
+            var dis = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
+            return Math.round(dis);
+        },
+        plotZipCars: function(that, map, lat, lon){
+            app.API.location_request("/Zipcar/GetLocations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
+                $.each(response.locations, function(index, data){                      
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,                  
+                        icon: "/img/zipcar-ico.png",
+                        map: map,
+                        title: data.location_name + " - " + data.num_vehicles + " cars",
+                    });
+                    that.markers.push(marker);
+                })
+            }, new function(){});
+        },
+        plotHubway: function(that, map, lat, lon){
+            app.API.location_request("/Hubway/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
+                $.each(response.stations, function(index, data){                      
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,                  
+                        icon: "/img/hubway-ico.png",
+                        map: map,
+                        title: data.station_name + " - " + data.available_bikes + " available bikes",
+                    });
+                    that.markers.push(marker);
+                })
+            }, new function(){});
+        },
+        plotMBTAStops: function(that, map, lat, lon){
+            app.API.location_request("/MBTA/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
+                $.each(response.stations, function(index, data){                      
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,                       
+                        icon: "/img/mbta-ico.png",
+                        map: map,
+                        title: data.stop_name
+                    });
+                    that.markers.push(marker);
+                })
+            }, new function(){});
         },
         initializeFilterValues: function(that){
             $.each($("input[type='range']"), function(index, data){
