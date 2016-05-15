@@ -36,8 +36,6 @@ button, .button {
   padding-top: 80px; }
   .block.block-span {
     margin-bottom: 0px; }
-  .block.bg {
-    background: #ccc; }
   .block .block-head {
     position: absolute;
     top: 20px;
@@ -157,6 +155,19 @@ i.scooter, span.scooter {
   .mode.disabled .fa-circle {
     color: #888; }
 
+.trans-bg {
+  background: none; }
+  .trans-bg:before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: white;
+    opacity: .8;
+    width: 100%;
+    height: 100%;
+    z-index: 0; }
+
 .question-view {
   height: 100vh;
   width: 100vw; }
@@ -166,17 +177,20 @@ i.scooter, span.scooter {
     width: 700px;
     margin-top: 150px;
     border-radius: 10px;
-    background: #333;
     padding: 30px; }
+  .question-view .question {
+    position: relative; }
   .question-view .submit {
     display: block;
     margin-top: 20px; }
 
 .user-view {
-  background-image: url("../../img/user-pattern.jpg"); }
+  background-image: url("../../img/bokeh.jpg");
+  background-size: contain; }
   .user-view .page-container {
     max-width: 900px;
-    margin: auto; }
+    margin: auto;
+    margin-top: 50px; }
   .user-view h1 {
     color: white; }
   .user-view .map {
@@ -216,6 +230,29 @@ i.scooter, span.scooter {
   top: 0;
   width: 100%;
   height: 100%; }
+
+.search-box {
+  width: 40vw;
+  height: 300px;
+  position: absolute;
+  left: 60vw;
+  top: 0;
+  z-index: 2;
+  margin-left: -20vw;
+  margin-top: 20px; }
+  .search-box input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px; }
+  .search-box .search-button {
+    height: 78px;
+    background: #333;
+    color: #ccc;
+    width: 100%;
+    font-size: 33px;
+    text-align: center;
+    padding-top: 22px;
+    cursor: pointer; }
 
 .search-bar {
   height: 100vh;

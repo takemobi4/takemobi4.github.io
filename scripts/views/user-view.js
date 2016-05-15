@@ -199,7 +199,7 @@ var mockProfileData = {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var currLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                     map.setCenter(currLocation);
-                });
+                });     
             }
         },
         closeCurrentMarker: function(){            

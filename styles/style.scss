@@ -78,9 +78,6 @@ button, .button{
     &.block-span{
         margin-bottom:0px;
     }
-    &.bg{        
-        background:$el-bg;
-    }
     .block-head{
         position: absolute;
         top: 20px;
@@ -225,6 +222,21 @@ i, span{
     }
 }
 
+.trans-bg{
+    background:none;
+    &:before{
+        content:' ';
+        position:absolute;
+        left:0;
+        top:0;
+        background:white;
+        opacity:.8;
+        width:100%;
+        height:100%;
+        z-index:0;
+    }
+}
+
 //user question view
 
 .question-view{    
@@ -236,8 +248,10 @@ i, span{
         width: 700px;
         margin-top: 150px;
         border-radius: 10px;
-        background: #333;
         padding: 30px;
+    }
+    .question{
+        position:relative;
     }
     .submit{            
         display: block;
@@ -248,10 +262,12 @@ i, span{
 //user view
  
 .user-view{
-    background-image: url('../../img/user-pattern.jpg');
+    background-image: url('../../img/bokeh.jpg');
+    background-size:contain;
     .page-container{
         max-width:900px;
         margin:auto;
+        margin-top:50px;
     }
     h1{
         color:white;
@@ -309,6 +325,32 @@ i, span{
     top: 0;
     width:100%;
     height:100%;
+}
+
+.search-box{
+    width: 40vw;
+    height: 300px;
+    position: absolute;
+    left: 60vw;
+    top: 0;
+    z-index: 2;
+    margin-left: -20vw;
+    margin-top:20px; 
+    input{
+        width:100%;
+        margin-bottom:10px;
+        padding:5px;
+    }
+    .search-button{
+        height: 78px;
+        background: #333;
+        color: #ccc;
+        width: 100%;
+        font-size: 33px;
+        text-align: center;
+        padding-top: 22px;
+        cursor:pointer;
+    }
 }
 
 .search-bar{

@@ -38,7 +38,13 @@ var app = app || {};
                 zoom: 12,
                 streetViewControl: false,
                 mapTypeControl: false
-            });       
+            });                              
+            var departureInput = document.getElementById('search-departure');
+            var arrivalInput = document.getElementById('search-arrival');
+            var departureAC = new google.maps.places.Autocomplete(departureInput);
+            var arrivalAC = new google.maps.places.Autocomplete(arrivalInput);
+            departureAC.bindTo('bounds', searchMap);      
+            arrivalAC.bindTo('bounds', searchMap);
             that.plotCurrentLocation(searchMap);        
         },
         initializeFilterValues: function(that){
@@ -63,20 +69,23 @@ var app = app || {};
         updateRangeValue: function(element, that){
             var displayEL = $("." + $(element).attr("data-display"));
             var displayType = $(element).attr("data-display-type");
-            $(displayEL).text(that.formatValue(displayType, $(element).val(), that));
+            var maxVal = parseFloat($(element).attr("max"));
+            $(displayEL).text(that.formatValue(displayType, $(element).val(), maxVal, that));
         },
-        formatValue: function(type, val, that){
-            var formattedValue = '';
+        formatValue: function(type, val, maxVal, that){
             switch(type){
                 case 'hours':
-                    return formattedValue = that.minTommss(val);
+                    return that.minTommss(val);
                 case 'money':
-                    return formattedValue = "$" + parseFloat(val).toFixed(2);
+                    return that.infinityOrValue("$" + parseFloat(val).toFixed(2), val, maxVal);
                 case 'minutes':
-                    return formattedValue = val + " minutes";
+                    return that.infinityOrValue(val + " minutes", val, maxVal);
                 default:
                     return val;
             }
+        },
+        infinityOrValue: function(returnVal, val, maxValue){
+            return val >= maxValue ? "infinity" : returnVal;
         },
         minTommss: function(hours){
             var hour = Math.floor(Math.abs(hours));

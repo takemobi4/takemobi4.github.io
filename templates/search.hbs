@@ -13,11 +13,11 @@
             </div>       
             <div class="range-filter">
                 <label class="label-text">Walking:</label><label class="label-data walking-time-disp"></label>
-                <input type="range" min="0" max="20" value="5" data-display="walking-time-disp" data-display-type="minutes" class="walking-time">
+                <input type="range" min="0" max="21" value="5" step="1" data-display="walking-time-disp" data-display-type="minutes" class="walking-time">
             </div>        
             <div class="range-filter">
                 <label class="label-text">Max Cost:</label><label class="label-data max-cost-disp"></label>
-                <input type="range" min="0" max="15" value="5" step=".5" data-display="max-cost-disp" data-display-type="money" class="max-cost">
+                <input type="range" min="0" max="50.5" value="5" step=".5" data-display="max-cost-disp" data-display-type="money" class="max-cost">
             </div>        
             <h1 class="filter-bar">Modes</h1>
             <div class="bubble-option-list">                
@@ -105,6 +105,17 @@
         </div>
     </div>
     <div class="map-area">
+        <div class="search-box">
+            <div class="row">
+                <div class="col-xs-10">
+                    <input type="text" id="search-departure" placeholder="Enter a departure location"/>
+                    <input type="text" id="search-arrival" placeholder="Enter an arrival location"/>
+                </div>
+                <div class="col-xs-2">
+                     <span class="fa fa-search search-button"></span>
+                </div>
+            </div>
+        </div>
         <div id="search-map" class="map">
         </div>
     </div>    
