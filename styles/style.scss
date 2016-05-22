@@ -126,6 +126,18 @@ button, .button{
     }
 }
 
+//forms
+
+.fieldset{    
+    margin-bottom: 15px;    
+}
+
+.legend{
+    font-weight: bold;
+    padding: 0 8px;    
+}
+
+
 //login view
 
 .login-view{
@@ -206,14 +218,16 @@ i, span{
 
 .mode{
     float: left;
-    font-size: 24px;
-    margin: 0 12px 10px 12px;
+    font-size: 22px;
+    margin: 0px 9px;
+    text-align: center;
     .mode-name{
-        font-size: 13px;
+        font-size: 11px;
         text-align: center;
         width: 100%;
         display: block;
         text-transform: uppercase;
+        position: relative;
     }
     &.disabled{
         .fa-circle{

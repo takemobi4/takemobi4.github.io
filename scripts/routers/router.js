@@ -16,7 +16,8 @@ var app = app || {};
             this.view = new app.SearchView();
         },
         loginRoute : function() {
-            this.view = new app.LoginView();
+            var mustLogIn = true;
+            this.view = new app.SearchView(mustLogIn);
         },
         quesionsRoute : function() {
             this.view = new app.UserQuestionsView();

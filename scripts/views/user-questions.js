@@ -32,11 +32,12 @@ var app = app || {};
             this.renderView(el, this);   
         },
         renderView: function(el, that){  
-            that.getQuestions(el, that);  
+            that.getQuestions(el, that);                 
+            $("body").removeClass("modal-open"); 
             el.removeClass();
-            el.addClass('user-view')
-            el.addClass('question-view')
-            el.addClass('app-container')
+            el.addClass('user-view');
+            el.addClass('question-view');
+            el.addClass('app-container');
         },
         answerQuestion: function(){
             var that = this;

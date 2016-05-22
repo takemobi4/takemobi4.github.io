@@ -6,10 +6,19 @@ var app = app || {};
     app.SearchView = Backbone.View.extend({
         tagName: "div",
         el: '.app-container',
-        initialize: function() {
+        initialize: function(mustLogIn) {
             $("body").html(this.el);
             this.render();
             this.markers = [];
+            if(mustLogIn){
+                this.logUserIn();
+            }
+        },
+        events : {
+            "change .range-filter input[type='range']": "changeRange",
+            "click .mode-filter": "toggleModeFilter",
+            "click .user-login": "logUserIn",
+            "submit #Login-modal form": "submitForm"
         },
         render: function() {
             var el = this.$el;
@@ -21,10 +30,22 @@ var app = app || {};
                 that.delegateEvents();                
                 that.setMaps(that); 
             }, 'html').done(function(){                
-            })
+            })       
+            $("body").removeClass("modal-open"); 
             this.$el.removeClass();
             this.$el.addClass('search-view');
             this.$el.addClass('app-container');
+        },
+        logUserIn: function(){
+            if(app.Global.loggedIn()){
+                window.location.hash = 'user';    
+                return false;
+            }
+            else{
+                setTimeout(function(){
+                    $('#Login-modal').modal('show');
+                }, 500)
+            }
         },
         plotCurrentLocation: function(that, map) {
             if (navigator.geolocation) {
@@ -129,10 +150,6 @@ var app = app || {};
                 that.updateRangeValue(data, that);
             });
         },
-        events : {
-            "change .range-filter input[type='range']": "changeRange",
-            "click .mode-filter": "toggleModeFilter"
-        },
         toggleModeFilter: function(e){
             var el = e.target;
             var modeToggle = $(el).is(".mode-filter") ? $(el) : $(el).parents(".mode-filter");
@@ -177,6 +194,48 @@ var app = app || {};
             }
             var min = Math.floor((Math.abs(hours) * 60) % 60);
             return hour + ":" + (min < 10 ? "0" : "") + min + " " + suffix;
+        },
+        submitForm: function(e){
+            e.preventDefault();
+            var userName = $("#username").val();
+            var password = $("#password").val();
+            var loginType = $('input[name=account-type]:checked', 'form').val();
+            if(loginType == "login"){
+                this.login(userName, password);
+            }
+            else{
+                this.createAccount(userName, password);                
+            }
+        },
+        login: function(user, pass){
+            var that = this;
+            $.ajax({
+                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
+            }).done(function(response) {
+                if(response.ERROR){
+                    return alert("Your login credentials are incorrect, please try again.");                 
+                }
+                var key = response.KEY;
+                that.setUserAndRedirect(user, key);
+            }).fail(function (jqXHR, textStatus) { 
+                return alert("Your login credentials are incorrect, please try again.");     
+            });
+        },
+        createAccount: function(user, pass){
+            var that = this;
+            $.ajax({
+                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
+            }).done(function(response) {
+                if(response.ERROR){
+                    return alert("There was an error creating your account");                       
+                }
+                that.login(user, pass);
+            });
+        },
+        setUserAndRedirect(user, key){
+            $.cookie('userID', user);
+            $.cookie('userKey', key);
+            window.location.hash = 'user';                
         }
     });
 })();

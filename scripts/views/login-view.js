@@ -19,7 +19,8 @@ var app = app || {};
                 var template = Handlebars.compile(data);
                 that.$el.html(template([]));
                 that.delegateEvents()
-            }, 'html')
+            }, 'html');
+            $("body").removeClass("modal-open"); 
             this.$el.removeClass();
             this.$el.addClass('login-view')
             this.$el.addClass('app-container')

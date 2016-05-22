@@ -7,3 +7,13 @@ var ESC_KEY = 27;
 (function () {
 	'use strict';
 });
+
+app.Global = new function(){
+    return {
+        loggedIn: function(){             
+            return $.cookie("userID");
+        }
+    }
+};    
+
+

@@ -21,35 +21,35 @@
             </div>        
             <h1 class="filter-bar">Modes</h1>
             <div class="bubble-option-list">                
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack bicycle fa-lg">
                     <i class="fa fa-circle bicycle fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Bike</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack train fa-lg">
                     <i class="fa fa-circle train fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Train</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack car fa-lg">
                     <i class="fa fa-circle car fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Car</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack walk fa-lg">
                     <i class="fa fa-circle walk fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Walk</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack bus fa-lg">
                     <i class="fa fa-circle bus fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
@@ -59,35 +59,35 @@
             </div>            
             <h1 class="filter-bar">Simulate</h1>
             <div class="bubble-option-list">               
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack rain fa-lg">
                     <i class="fa fa-circle rain fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Rain</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack snow fa-lg">
                     <i class="fa fa-circle snow fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Snow</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack sleet fa-lg">
                     <i class="fa fa-circle sleet fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Sleet</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack ice fa-lg">
                     <i class="fa fa-circle ice fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="mode-name">Ice</span>
                 </div>
-                <div class="mode-filter">
+                <div class="mode-filter selected">
                     <span class="fa-stack cold fa-lg">
                     <i class="fa fa-circle cold fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x fa-inverse"></i>
@@ -95,7 +95,7 @@
                     <span class="mode-name">Cold</span>
                 </div>
             </div>
-            <h1 class="filter-bar"><a href="#user">Profile</a></h1>
+            <h1 class="filter-bar"><a href="#" class="user-login">Profile</a></h1>
             <div class="filter-bar cc-id">                    
                 <i class="fa fa-cc-amex amex"></i>
                 <i class="fa fa-cc-mastercard mastercard"></i>
@@ -119,4 +119,29 @@
         <div id="search-map" class="map">
         </div>
     </div>    
+</div>
+<div id="Login-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Login or Create Account</h4>
+        <p>Choose login or create an account to continue</p>
+      </div>
+      <div class="modal-body">
+         <form>
+            <fieldset>
+                <legend>Account Type:</legend>
+                <input type="radio" name="account-type" value="login" checked>Existing User<br>
+                <input type="radio" name="account-type" value="create">Create Account<br>
+            </fieldset>
+            <fieldset>
+                <legend>Credentials:</legend>
+                <input type="text" name="username" id="username" placeholder="User ID"/>
+                <input type="password" name="password" id="password" placeholder="Password"/>
+            </fieldset>
+            <input type="submit" value="Submit"/>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

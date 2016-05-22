@@ -27,7 +27,7 @@ var mockProfileData = {
     app.UserView = Backbone.View.extend({
         tagName: "div",
         el: '.app-container',
-        initialize: function() {
+        initialize: function(loginRequired) {
             $("body").html(this.el);
             this.render();
         },
@@ -36,7 +36,7 @@ var mockProfileData = {
             "click .submit-membership": "addMembership",
             "click .submit-mode": "addMode"
         },
-        addMode: function(){                  
+        addMode: function(e){                  
             var form = $(e.target).parents("#mode-modal");
             var modeType = $(form).find(".mode-type").val();
             var that = this;
@@ -240,6 +240,7 @@ var mockProfileData = {
         renderView: function(el, userData, that){      
             $.get('templates/user.hbs', function (data) {
                 var template = Handlebars.compile(data);
+                $("body").removeClass("modal-open"); 
                 el.html(template(userData));
                 el.removeClass();
                 el.addClass('user-view')
