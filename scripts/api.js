@@ -1,8 +1,8 @@
 var app = app || {};
 
-var BASE_URL = "http://api.takemobi.com:8080/profilemanager/V2";
-var BASE_LOCATION_URL = "http://api.takemobi.com:8080/servicelocator";
-var BASE_SEARCH_URL = "http://api.takemobi.com:8080/mobirouting/V2";
+var BASE_URL = "https://api.takemobi.com:8443/profilemanager/V2";
+var BASE_LOCATION_URL = "https://api.takemobi.com:8443/servicelocator";
+var BASE_SEARCH_URL = "https://api.takemobi.com:8443/mobirouting/V2";
 
 app.API = new function(){
     return {
