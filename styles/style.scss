@@ -355,15 +355,16 @@ i, span{
         margin-bottom:10px;
         padding:5px;
     }
-    .search-button{
+    .search-button{    
         height: 78px;
         background: #333;
         color: #ccc;
         width: 100%;
         font-size: 33px;
         text-align: center;
-        padding-top: 22px;
-        cursor:pointer;
+        padding-top: 15px;
+        display: inline-block;
+        cursor: pointer;
     }
 }
 
@@ -413,6 +414,93 @@ i, span{
     }
     .label-data{
         float:right;
+    }
+    &.results-bar{
+        .filter-bar:first-child{
+            display:none;
+        }        
+    }
+    .results-area{            
+        height: 50vh;
+        overflow: auto;
+    }
+    .search-result{
+        padding: 5px;
+        width: 100%;
+        margin-bottom: 10px;
+        background: white;
+        clear: both;
+        display: inline-block;
+        cursor:pointer;
+        &.selected{
+            border:2px solid #000;
+            background:#fafafa;
+        }
+        .heading{
+            float:left;
+            width:100%;
+        }
+        .departure{
+            text-align:right;
+        }
+    }
+    .trip-timeline{
+        width:100%;
+        height:1px;
+        position:relative;
+        border:3px dotted $text;
+        margin: 5px 0 15px 0;
+        float: left;
+        .activity-plot{
+            position: absolute;
+            top: -10px;
+            height: 20px;
+            width: 20px;
+            margin: 0;
+            display: inline-block;
+            line-height: 20px;
+            border-radius: 100%;
+            background-size: contain;
+            background-color:$text;
+            text-align:center;
+            color:black;
+            font-size:10px;
+            &.train{
+                background-color:$train;
+            }
+            &.bike{
+                background-color:$bicycle;
+            }
+            &.drive{
+                background-color:$car;    
+            }
+            &.walk{
+                background-image: url("../../img/walk-ico.png");
+                background-color: $walk;
+                background-size: 75% 75%;
+                background-position: center 48%;
+                background-repeat: no-repeat;
+                background-image:url("../../img/walk-ico.png")
+            }
+            &.taxi{
+                background-color:yellow;    
+            }
+            &.transit{
+                background-image:url("../../img/mbta-ico.png")
+            }
+            &.uber{
+                background-image:url("../../img/uber-ico.png")
+            }
+            &.lyft{
+                background-image:url("../../img/lyft-ico.png")
+            }
+            &.zipcar{
+                background-image:url("../../img/zipcar-ico.png")
+            }
+            &.hubway{
+                background-image:url("../../img/hubway-ico.png")
+            }
+        }
     }
 }
 

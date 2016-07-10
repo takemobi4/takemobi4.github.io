@@ -1,0 +1,31 @@
+{{#each destinations}}
+    <div class="search-result" id="{{id}}">
+        <p class="heading">
+            <span class="pull-left">
+            {{#if isFastSolution}}
+                <span>Fastest:</span>
+            {{else if isCheapSolution}}
+                <span>Cheapest:</span>
+            {{else if isPreferredSolution}}
+                <span>Preferred:</span>
+            {{/if}}
+            {{flattenFloat duration}} minutes
+            </span>
+            <span class="pull-right">
+                <strong>${{absVal cost}}</strong>
+            </span>
+            <div class="trip-timeline">
+                {{{tripTimeLine this}}}
+            </div>
+            <p class="departure"><strong>
+                {{#is activities.0.type "WAIT"}}  
+                    {{timeFromNow activities.0.lowerbound}}
+                {{else}}
+                    Leave Now!
+                {{/is}}
+            </strong></p>
+        </p>
+    </div>
+{{else}}
+    <p class="empty">No results! Sorry.</p>
+{{/each}}
