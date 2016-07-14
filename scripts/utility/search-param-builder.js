@@ -74,11 +74,11 @@ var app = app || {};
             params += "allowBiking=" +  $(".bicycle").parent().hasClass("selected") +  "&";
 
             //simulate!
-            //params += "isCold=" +  $(".cold").parent().hasClass("selected") +  "&";
-            //params += "isSleet=" +  $(".sleet").parent().hasClass("selected") +  "&";
-            //params += "isSnow=" +  $(".snow").parent().hasClass("selected") +  "&";
-            //params += "isRain=" +  $(".rain").parent().hasClass("selected") +  "&";
-            //params += "isIce=" +  $(".ice").parent().hasClass("selected") +  "";
+            params += "isCold=" +  $(".cold").parent().hasClass("selected") +  "&";
+            params += "isSleet=" +  $(".sleet").parent().hasClass("selected") +  "&";
+            params += "isSnow=" +  $(".snow").parent().hasClass("selected") +  "&";
+            params += "isRain=" +  $(".rain").parent().hasClass("selected") +  "&";
+            params += "isIce=" +  $(".ice").parent().hasClass("selected") +  "";
 
             return params;
         },
