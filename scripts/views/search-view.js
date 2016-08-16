@@ -76,7 +76,7 @@ var app = app || {};
                 that.renderResults(that, results);
             }, function(){ return false; });                        
         },
-        renderResults: function(that, fullResults){
+        renderResults: function(that, fullResults, cb){
             that.setResultViewState();
 
             that.clearMarkersAndPolys(that.markers);
@@ -87,6 +87,7 @@ var app = app || {};
                 }
             });
             var results = [];
+            that.fullResults = fullResults;
             results.destinations = realDestinations;
             window.searchTime = fullResults.StartTime;
             that.searchTime = fullResults.StartTime;
@@ -94,8 +95,11 @@ var app = app || {};
                 var template = Handlebars.compile(data);
                 $(".results-area").html(template(results));
                 that.delegateEvents()
+                if(cb){
+                    cb();
+                }
             }, 'html');
-
+            
             that.setMapPolyLinesandNodes(that, results.destinations);
         },
         setMapPolyLinesandNodes: function(that, destinations){
@@ -136,6 +140,7 @@ var app = app || {};
             var activeOpacity = 1;
             that.clearMarkersAndPolys(that.markers);
             $(".search-result").removeClass("selected");
+            $(".search-result").addClass("collapsed");
             $.each(that.allDestinationPolylines, function(){
                 this.setOptions({strokeOpacity: defaultOpacity});
             });
@@ -144,10 +149,12 @@ var app = app || {};
             $.each(destinationPolylines, function(){                             
                 this.setOptions({strokeOpacity: activeOpacity});
             });
-            $("#" + destinationId + "").addClass("selected");
+            $("#" + destinationId + "").removeClass("collapsed").addClass("selected");
+            that.renderResults(that, that.fullResults, that.renderSelected.bind(that, that, "#" + destinationId + "", destination));
             $.each(destination.activities, function(i, act){
                 var actCoords = that.mapPolylineToCoordinateArray(act.polyline);
-                that.markers.push(that.setMarkerForActivity(that, act, actCoords));
+                var destMarker = that.setMarkerForActivity(that, act, actCoords);
+                that.markers.push(destMarker);
             });
             var finalDestination = destination.activities[destination.activities.length - 1];
             var duration = destination.duration;
@@ -155,6 +162,14 @@ var app = app || {};
                 duration += destination.activities[0].lowerbound;
             }
             that.setDestinationMarker(finalDestination.endLat, finalDestination.endLon, duration, that);
+        },
+        renderSelected: function(that, el, destination){
+            $.get('templates/selectedResult.hbs', function (data) {
+                var template = Handlebars.compile(data);
+                $(el).html(template(destination));
+                $(el).addClass("selected");
+                that.delegateEvents()
+            }, 'html');
         },
         setDestinationMarker: function(lat, lon, duration,that){
             var startTime = that.searchTime;

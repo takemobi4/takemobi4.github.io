@@ -29,6 +29,32 @@ Handlebars.registerHelper('tripTimeLine', function(data) {
     return mappedResults.join("");
 });
 
+Handlebars.registerHelper('detailTimeLine', function(data) {
+    var tripDurationMins = data.duration;
+    var timeLineEntries = [];
+    var totalMinutes = 0;
+    $.each(data.activities, function(index, act){
+        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT"){            
+            totalMinutes += act.lowerbound;
+            return true;
+        }
+        var d1 = new Date (),
+        x = new Date ( d1 );
+        x.setMinutes ( d1.getMinutes() + totalMinutes );
+        
+        var ampm = x.getHours() >= 12 ? "pm" : "am";
+        var timeEta = (x.getHours() > 12 ? x.getHours() - 12 : x.getHours()) + ":" +  checkTime(x.getMinutes()) + " " + ampm
+        totalMinutes += act.lowerbound;
+        var title = (act && act.activities && act.activities.line) ? act.activities.line : act.type.toLowerCase();
+        timeLineEntries.push({type: act.type.toLowerCase(), title: title, description: act.name, eta: timeEta});       
+    });
+    var timeLineHtml = "";
+    var mappedResults = $.map(timeLineEntries, function(val){
+        return "<div class='activity-container'><div class='activity-item  " + val.type + "'>" + getFaIcon(val.type) + "</div> <span>" + val.title + "</span><p class='activity-description'>" + val.description +"<p>ETA: " + val.eta + "</p></div>";
+    });
+    return mappedResults.join("");
+});
+
 function getFaIcon(type){
     switch(type){
         case "car":

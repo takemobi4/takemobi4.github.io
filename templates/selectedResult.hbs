@@ -1,0 +1,21 @@
+<div class="search-result" id="{{id}}">
+    <p class="heading">
+        <span class="pull-left">
+        {{#if isFastSolution}}
+            <span>Fastest:</span>
+        {{else if isCheapSolution}}
+            <span>Cheapest:</span>
+        {{else if isPreferredSolution}}
+            <span>Preferred:</span>
+        {{/if}}
+        {{flattenFloat duration}} minutes
+        </span>
+        <span class="pull-right">
+            <strong>${{absVal cost}}</strong>
+        </span>
+        <div class="activity-list">
+            {{{detailTimeLine this}}}
+        </div>        
+        <button class="btn btn-book">Book Now</button>
+    </p>
+</div>
