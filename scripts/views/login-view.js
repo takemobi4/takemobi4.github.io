@@ -40,7 +40,7 @@ var app = app || {};
         login: function(user, pass){
             var that = this;
             $.ajax({
-                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8443/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("Your login credentials are incorrect, please try again.");                 
@@ -54,7 +54,7 @@ var app = app || {};
         createAccount: function(user, pass){
             var that = this;
             $.ajax({
-                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8443/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("There was an error creating your account");                       
