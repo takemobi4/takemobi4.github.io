@@ -37,12 +37,15 @@ function searchTrains(){
 		url.push("passengerSpecs="+40+"&");
 
 		console.log("Booking " + fromStationID + "-->" +toStationID + ": " + url.join(""));
+		busy();
+
 		$.get(url.join(""), function(data) {
 			// console.log(data);
 			var status = data.getElementsByTagName("requestStatus")[0].firstChild.textContent;
 
 			if (status.indexOf('true') < 0){
 				document.getElementById("bookingStatus").innerHTML = "Sorry, no train between your from/to stations was found"
+				ready();
 				return;
 			}
 
@@ -51,6 +54,7 @@ function searchTrains(){
 
 			if (options <= 0){
 				document.getElementById("bookingStatus").innerHTML = "Sorry, no train between your from/to stations was found"
+				ready();
 				return;
 			}
 
@@ -148,7 +152,7 @@ function searchTrains(){
 				resultContainer.appendChild(resultDiv);
 			}
 
-			
+			ready();
 			
 	    });
 	}	
@@ -214,73 +218,79 @@ function bookTrain(resultIdx){
 	options["passengerSpecs"] = passengerSpecs;
 	options["paymentMethod"] = paymentMethod;
 	options["paymentAmount"] = legPrices[resultIdx].getElementsByTagName("totalPrice")[0].textContent;
-
+	busy();
 	// send the collected data as JSON
 	// console.log(JSON.stringify(options));
 	$.postJSON(url,options, function(data) {
-			console.log(data);
-			if (data.error != null){
-				document.getElementById("bookingStatus").innerHTML = data.error;
-			} else {
-				var resultObj = jQuery.parseXML(data.result);
-
-				var faults = resultObj.getElementsByTagName("faultstring");
-				if (faults != null && faults.length > 0){
-					document.getElementById("bookingStatus").innerHTML = faults[0].textContent;
-					return;
-				}
-
-				var success = resultObj.getElementsByTagName("success")[0];
-				if (success.textContent.indexOf("false") >= 0){
-					var statusMessage = resultObj.getElementsByTagName("statusMessage")[0];
-					document.getElementById("bookingStatus").innerHTML = statusMessage.getElementsByTagName("message")[0].textContent;
-					return;
-				}
-
-				var bookingRecord = resultObj.getElementsByTagName("bookingRecord")[0];
-
-				var receiptsTotal = bookingRecord.getElementsByTagName("receiptsTotal")[0];
-				var receiptPayment = receiptsTotal.getAttributeNode("currency").value + receiptsTotal.textContent;
-
-				var recordLocator = bookingRecord.getAttributeNode("recordLocator").value;
-
-				var passenger = bookingRecord.getElementsByTagName("passenger")[0];
-				var nameFirst = passenger.getElementsByTagName("nameFirst")[0].textContent;
-				var nameLast = passenger.getElementsByTagName("nameLast")[0].textContent;
-
-				var order = bookingRecord.getElementsByTagName("order")[0];
-				var orderID = order.getAttributeNode("orderID").value;
-
-				var travelSegment = bookingRecord.getElementsByTagName("travelSegment")[0];
-				var fromStation = travelSegment.getElementsByTagName("originTravelPoint")[0].textContent;
-				var toStation = travelSegment.getElementsByTagName("destinationTravelPoint")[0].textContent;
-				var departureDateTime = travelSegment.getElementsByTagName("departureDateTime")[0].textContent;
-				var arrivalDateTime = travelSegment.getElementsByTagName("arrivalDateTime")[0].textContent;
-				var marketingServiceName = travelSegment.getElementsByTagName("marketingServiceName")[0].textContent;
-
-				var bookingResult = [];
-				bookingResult.push("Ticket reserved. Record locator: " + recordLocator);
-				bookingResult.push("Passenger: " + nameFirst + " " + nameLast);
-				bookingResult.push(fromStation + "--" + toStation + "  on " + marketingServiceName);
-				bookingResult.push("Departure: " + departureDateTime + "  Arrival: " + arrivalDateTime);
-				bookingResult.push("Order ID: " + orderID + " / Payment: " + receiptPayment);
-
-				document.getElementById("bookingResult").innerHTML = bookingResult.join("<br />");
-
-				// cancel the booking
-				var url = []
-				url.push("https://api.takemobi.com:8443/servicelocator/SilverRail/trains/booking/cancel?");
-				url.push("conversationToken=1234&");
-				url.push("recordLocator="+recordLocator+"&");
-				url.push("expectedCancellationFee="+0);
-
-				console.log("Cancelling booking " +  url.join(""));
-				$.get(url.join(""), function(data) {
-				console.log(data);
-				});
-			}
+		console.log(data);
+		if (data.error != null){
+			document.getElementById("bookingStatus").innerHTML = data.error;
+			ready();
+			return;
 		}
-	);		
+		
+		var resultObj = jQuery.parseXML(data.result);
+
+		var faults = resultObj.getElementsByTagName("faultstring");
+		if (faults != null && faults.length > 0){
+			document.getElementById("bookingStatus").innerHTML = faults[0].textContent;
+			ready();
+			return;
+		}
+
+		var success = resultObj.getElementsByTagName("success")[0];
+		if (success.textContent.indexOf("false") >= 0){
+			var statusMessage = resultObj.getElementsByTagName("statusMessage")[0];
+			document.getElementById("bookingStatus").innerHTML = statusMessage.getElementsByTagName("message")[0].textContent;
+			ready();
+			return;
+		}
+
+		var bookingRecord = resultObj.getElementsByTagName("bookingRecord")[0];
+
+		var receiptsTotal = bookingRecord.getElementsByTagName("receiptsTotal")[0];
+		var receiptPayment = receiptsTotal.getAttributeNode("currency").value + receiptsTotal.textContent;
+
+		var recordLocator = bookingRecord.getAttributeNode("recordLocator").value;
+
+		var passenger = bookingRecord.getElementsByTagName("passenger")[0];
+		var nameFirst = passenger.getElementsByTagName("nameFirst")[0].textContent;
+		var nameLast = passenger.getElementsByTagName("nameLast")[0].textContent;
+
+		var order = bookingRecord.getElementsByTagName("order")[0];
+		var orderID = order.getAttributeNode("orderID").value;
+
+		var travelSegment = bookingRecord.getElementsByTagName("travelSegment")[0];
+		var fromStation = travelSegment.getElementsByTagName("originTravelPoint")[0].textContent;
+		var toStation = travelSegment.getElementsByTagName("destinationTravelPoint")[0].textContent;
+		var departureDateTime = travelSegment.getElementsByTagName("departureDateTime")[0].textContent;
+		var arrivalDateTime = travelSegment.getElementsByTagName("arrivalDateTime")[0].textContent;
+		var marketingServiceName = travelSegment.getElementsByTagName("marketingServiceName")[0].textContent;
+
+		var bookingResult = [];
+		bookingResult.push("Ticket reserved. Record locator: " + recordLocator);
+		bookingResult.push("Passenger: " + nameFirst + " " + nameLast);
+		bookingResult.push(fromStation + "--" + toStation + "  on " + marketingServiceName);
+		bookingResult.push("Departure: " + departureDateTime + "  Arrival: " + arrivalDateTime);
+		bookingResult.push("Order ID: " + orderID + " / Payment: " + receiptPayment);
+
+		document.getElementById("bookingResult").innerHTML = bookingResult.join("<br />");
+
+		// cancel the booking
+		var url = []
+		url.push("https://api.takemobi.com:8443/servicelocator/SilverRail/trains/booking/cancel?");
+		url.push("conversationToken=1234&");
+		url.push("recordLocator="+recordLocator+"&");
+		url.push("expectedCancellationFee="+0);
+
+		console.log("Cancelling booking " +  url.join(""));
+		$.get(url.join(""), function(data) {
+			console.log(data);
+		});
+
+		ready();
+		
+	});		
 		
 }
 
@@ -299,6 +309,26 @@ $.postJSON = function(url, data, callback) {
     'success': callback
     });
 };
+
+function busy() {
+    document.getElementById("loading").innerHTML = '<img src="img/loading.gif" height="30" width="30">';
+}
+
+function ready() {
+    document.getElementById("loading").innerHTML = '';
+}
+
+function reset() {
+    ready();
+    document.getElementById("bookingStatus").innerHTML = "";
+    document.getElementById("bookingResult").innerHTML = "";
+    var resultContainer = document.getElementById("trainResultContainer");	
+    resultContainer.innerHTML = "";
+
+    document.getElementById("firstNameInput").value = "";
+	document.getElementById("lastNameInput").value = "";
+	document.getElementById("emailInput").value = "";
+}
 
 function getDate() {
     var now     = new Date(); 
