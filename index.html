@@ -58,7 +58,6 @@
 	                    <br />
 
 	                    <div style="text-align:center;font-size:16px">
-
 	                        <div>
 	                            <div style="text-align:center;width:49%;float:left;">
 	                                <label>From:</label> 
@@ -78,7 +77,6 @@
 	                                <select id="toStation" onchange="validStationPair();">
 	                                    <option value=""></option>
 	                                    <option value="USPHL">Philadelphia</option>
-	                                    <option value="USCHI">Chicago</option>
 	                                    <option value="USNYP">New York</option>
 	                                    <option value="USNYP">Washington D.C.</option>
 	                                    <option value="USBAL">Baltimore</option>
@@ -86,28 +84,63 @@
 	                                    <option value="USALB">Albany–Rensselaer</option>
 	                                    <option value="USNHV">New Haven</option>
 	                                    <option value="USSTM">Stamford</option>
+	                                    <option value="USWOR">Worcester</option>
+	                                    <option value="USNWK">Newark</option>
 	                                </select>
 	                            </div>
 	                        </div>
 
 
-                            <div style="padding-top:20px;text-align:center;width:100%;float:left;">
+                            <div style="text-align:center;width:100%;float:left;padding-top:5px">
                                 <button type="button" class="btn btn-sm btn-info" style="width:480px;height:30px" onclick="searchTrains()">SEARCH</button>
                                 <hr>
                             </div>
 
                             <div id="table-wrapper" style="display:block;">
-				                <h5>Search Results</h5>
+				                <h4 style="margin:1px">Search Results</h4>
 	                            <div style="overflow-y:auto;max-height:250px;padding-top:20px;padding-bottom:20px;">
 				                    <div id="trainResultContainer" style="width:100%;display:table;border-collapse:collapse;">
 					                </div>
 				                </div>
 			                </div>
-	                        <div style="padding-top:20px;padding-bottom:20px;">
+
+	                        <div style="padding-top:10px;padding-bottom:10px;">
+	                            <hr>
+	                        </div>
+
+	                        <div style="display:block;vertical-align:top;">
+				                <div id="passengerInfoContainer" style="width:100%;display:table;">
+					                <div style="width:100%;display:table-row;">
+						                <div style="width:40%;display:table-cell;">
+						                	<h5 style="margin:1px">First Name</h5>
+							            </div>
+							            <div style="width:40%;display:table-cell;">
+						                	<h5 style="margin:1px">Last Name</h5>
+							            </div>
+							            <div style="width:20%;display:table-cell;">
+						                	<h5 style="margin:1px">Email</h5>
+							            </div>
+						            </div>
+						            <div style="width:100%;display:table-row;">
+						                <div style="width:40%;display:table-cell;">
+						                	<input id="firstNameInput" type="text" placeholder="First Name" style="width:90%;" />
+							            </div>
+							            <div style="width:40%;display:table-cell;">
+						                	<input id="lastNameInput" type="text" placeholder="Last Name" style="width:90%;" />
+							            </div>
+							            <div style="width:20%;display:table-cell;">
+						                	<input id="emailInput" type="text" placeholder="Email" style="width:90%;" />
+							            </div>
+						            </div>
+					            </div>
+			                </div>
+
+	                        <div>
 	                            <hr>
 	                        </div>
 
 	                        <div style="padding-bottom:20px;">
+	                        	<h5><p id="bookingResult"></p></h5>
 	                            <h5><p id="bookingStatus" style="color:red"></p></h5>
 	                        </div>
 	                    </div>  
