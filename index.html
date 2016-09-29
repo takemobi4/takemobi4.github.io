@@ -40,6 +40,86 @@
         <script src="scripts/views/user-questions.js" type="text/javascript"></script>
         <script src="scripts/models/trip.js" type="text/javascript"></script>
         <script src="scripts/routers/router.js" type="text/javascript"></script>
+        <script src="scripts/bookings/amtrak.js" type="text/javascript"></script>
+
+        <div class="modal fade" id="amtrakticket" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                    <h4 class="modal-title" id="aboutModalLabel">Book Next Train</h4>
+	                </div>
+
+	                <div class="modal-body" style="text-align:left;">
+
+		                <div class="form-group">
+	                        <label>Please select your destination, and click SEARCH to find the next available train.</label>
+	                    </div>
+	                    <br />
+
+	                    <div style="text-align:center;font-size:16px">
+
+	                        <div>
+	                            <div style="text-align:center;width:49%;float:left;">
+	                                <label>From:</label> 
+	                                <select id="fromStation" onchange="validStationPair();">
+	                                    <option value=""></option>
+	                                    <option value="USBOS">South Station</option>
+	                                    <option value="USBBY">Back Bay</option>
+	                                    <option value="USBON">North Station</option>
+	                                    <option value="USRTE">Route 128</option>
+	                                    <option value="USWOB">Woburn</option>
+	                                    <option value="USFRA">Framingham</option>
+	                                </select>
+	                            </div>
+
+	                            <div style="text-align:center;width:50%;float:left;">
+	                                <label>To:</label>
+	                                <select id="toStation" onchange="validStationPair();">
+	                                    <option value=""></option>
+	                                    <option value="USPHL">Philadelphia</option>
+	                                    <option value="USCHI">Chicago</option>
+	                                    <option value="USNYP">New York</option>
+	                                    <option value="USNYP">Washington D.C.</option>
+	                                    <option value="USBAL">Baltimore</option>
+	                                    <option value="USPVD">Providence</option>
+	                                    <option value="USALB">Albany–Rensselaer</option>
+	                                    <option value="USNHV">New Haven</option>
+	                                    <option value="USSTM">Stamford</option>
+	                                </select>
+	                            </div>
+	                        </div>
+
+
+                            <div style="padding-top:20px;text-align:center;width:100%;float:left;">
+                                <button type="button" class="btn btn-sm btn-info" style="width:480px;height:30px" onclick="searchTrains()">SEARCH</button>
+                                <hr>
+                            </div>
+
+                            <div id="table-wrapper" style="display:block;">
+				                <h5>Search Results</h5>
+	                            <div style="overflow-y:auto;max-height:250px;padding-top:20px;padding-bottom:20px;">
+				                    <div id="trainResultContainer" style="width:100%;display:table;border-collapse:collapse;">
+					                </div>
+				                </div>
+			                </div>
+	                        <div style="padding-top:20px;padding-bottom:20px;">
+	                            <hr>
+	                        </div>
+
+	                        <div style="padding-bottom:20px;">
+	                            <h5><p id="bookingStatus" style="color:red"></p></h5>
+	                        </div>
+	                    </div>  
+
+	                </div>
+
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     </body>            
 </html>
     

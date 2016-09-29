@@ -319,6 +319,7 @@ var app = app || {};
                     that.plotMBTAStops(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotZipCars(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotHubway(that, map, position.coords.latitude, position.coords.longitude);
+                    that.plotAmtrak(that, map, position.coords.latitude, position.coords.longitude);
                     /*that.listenerHandle = map.addListener('bounds_changed', function() {
                         var cachedLat = map.getCenter().lat();
                         var cachedLon = map.getCenter().lng();                        
@@ -393,6 +394,8 @@ var app = app || {};
                     return "/img/lyft-ico.png";
                 case "hubway":
                     return "/img/hubway-ico.png";
+                case "amtrak":
+                    return "/img/amtrak-ico.png";
                 default:
                     return "";
             }
@@ -436,6 +439,28 @@ var app = app || {};
                         title: data.stop_name
                     });
                     that.markers.push(marker);
+                })
+            }, new function(){});
+        },
+        plotAmtrak: function(that, map, lat, lon){
+            app.API.location_request("/Amtrak/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
+                $.each(response.stations, function(index, data){                      
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,                  
+                        icon: "/img/amtrak-ico.png",
+                        map: map,
+                        title: data.station_name + " (" + data.station_id + ")",
+                    });
+                    that.markers.push(marker);
+
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: '<div style="float:center;text-align:center">' + data.station_name + '<br />' + 
+                        '<button type="button" class="btn btn-info" style="width:80px;height:35px" data-toggle="modal" data-target="#amtrakticket" data-dismiss="modal">Ticket</button></div>',
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infoWindow.open(map, marker);
+                    });
                 })
             }, new function(){});
         },
