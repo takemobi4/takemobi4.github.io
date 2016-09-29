@@ -196,7 +196,7 @@ function bookTrain(resultIdx){
 $.postJSON = function(url, data, callback) {
     return jQuery.ajax({
     headers: { 
-        'Accept': 'text/html,application/xhtml+xml,application/xml',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'        
