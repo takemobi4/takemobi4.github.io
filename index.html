@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Take Mobi</title>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="styles/css/style.css" type="text/css">
         <link rel="stylesheet" href="styles/css/bootstrap.min.css" type="text/css">        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
@@ -41,6 +42,20 @@
         <script src="scripts/models/trip.js" type="text/javascript"></script>
         <script src="scripts/routers/router.js" type="text/javascript"></script>
         <script src="scripts/bookings/amtrak.js" type="text/javascript"></script>
+        <script src="scripts/bookings/stations.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+		  $( function() {    
+		    $( "#fromStation" ).autocomplete({
+		      source: availableAmtrakStations
+		    });
+		  });
+		  $( function() {    
+		    $( "#toStation" ).autocomplete({
+		      source: availableAmtrakStations
+		    });
+		  });
+		</script>
 
         <div class="modal fade" id="amtrakticket" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
 	        <div class="modal-dialog">
@@ -57,25 +72,25 @@
 	                    </div>
 	                    <br />
 
-	                    <div style="text-align:center;font-size:16px">
+	                    <div style="text-align:center;font-size:16px;z-index:100">
 	                        <div>
 	                            <div style="text-align:center;width:49%;float:left;">
 	                                <label>From:</label> 
-	                                <select id="fromStation" onchange="validStationPair();">
-	                                    <option value=""></option>
+	                                <input id="fromStation" onchange="validStationPair();">
+<!-- 	                                    <option value=""></option>
 	                                    <option value="USBOS">South Station</option>
 	                                    <option value="USBBY">Back Bay</option>
 	                                    <option value="USBON">North Station</option>
 	                                    <option value="USRTE">Route 128</option>
 	                                    <option value="USWOB">Woburn</option>
-	                                    <option value="USFRA">Framingham</option>
-	                                </select>
+	                                    <option value="USFRA">Framingham</option> -->
+	                                </input>
 	                            </div>
 
 	                            <div style="text-align:center;width:50%;float:left;">
 	                                <label>To:</label>
-	                                <select id="toStation" onchange="validStationPair();">
-	                                    <option value=""></option>
+	                                <input id="toStation" onchange="validStationPair();">
+<!-- 	                                    <option value=""></option>
 	                                    <option value="USPHL">Philadelphia</option>
 	                                    <option value="USNYP">New York</option>
 	                                    <option value="USNYP">Washington D.C.</option>
@@ -85,8 +100,8 @@
 	                                    <option value="USNHV">New Haven</option>
 	                                    <option value="USSTM">Stamford</option>
 	                                    <option value="USWOR">Worcester</option>
-	                                    <option value="USNWK">Newark</option>
-	                                </select>
+	                                    <option value="USNWK">Newark</option> -->
+	                                </input>
 	                            </div>
 	                        </div>
 

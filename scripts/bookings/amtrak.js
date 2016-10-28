@@ -16,19 +16,23 @@ function validStationPair(){
 function searchTrains(){
 
 	document.getElementById("bookingStatus").innerHTML = "";
-	var fromStationID = document.getElementById('fromStation').value;
-	var toStationID = document.getElementById('toStation').value;
+	var fromStationName = document.getElementById('fromStation').value;
+	var toStationName = document.getElementById('toStation').value;
 
-	if (fromStationID.indexOf(toStationID) >= 0 && fromStationID.length > 0 && toStationID.length > 0){
+	if (fromStationName.indexOf(toStationName) >= 0 && fromStationName.length > 0 && toStationName.length > 0){
 		document.getElementById("bookingStatus").innerHTML = "From and to stations cannot be the same"
-	} else if (fromStationID.length == 0){
+	} else if (fromStationName.length == 0){
 		document.getElementById("bookingStatus").innerHTML = "Please select a departure station"
-	} else if (toStationID.length == 0){
+	} else if (toStationName.length == 0){
 		document.getElementById("bookingStatus").innerHTML = "Please select a destination station"
 	} else {
 		var url = []
 		url.push("https://api.takemobi.com:8443/servicelocator/SilverRail/trains/availability/oneway?");
 		url.push("conversationToken=1234&");
+
+		var fromStationID = fromStationName.substring(fromStationName.length-6,fromStationName.length-1);
+		var toStationID = toStationName.substring(toStationName.length-6,toStationName.length-1);
+
 		url.push("originStationCode="+fromStationID+"&");
 		url.push("destinationStationCode="+toStationID+"&");
 		url.push("departureDate="+getDate()+"&");

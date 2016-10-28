@@ -437,3 +437,11 @@ input[type=range]:focus {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #222; }
+
+.ui-autocomplete {
+    z-index: 5000;
+}
+
+.ui-draggable, .ui-droppable {
+  background-position: top;
+}
