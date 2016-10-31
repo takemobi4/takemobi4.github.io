@@ -155,7 +155,7 @@ function searchTrains(){
 
 				resultContainer.appendChild(resultDiv);
 			}
-
+			showBookingInformation();
 			ready();
 			
 	    });
@@ -178,13 +178,24 @@ function bookTrain(resultIdx){
 	options["legSolutionXML"] = new XMLSerializer().serializeToString(legSolutions[resultIdx]);
 	options["legPriceXML"] = new XMLSerializer().serializeToString(legPrices[resultIdx]);
 
-	console.log("Booking with: ");
-	console.log(legSolutions[resultIdx]);
-	console.log(legPrices[resultIdx]);
+	// console.log("Booking with: ");
+	// console.log(legSolutions[resultIdx]);
+	// console.log(legPrices[resultIdx]);
 
 	var nameFirst = document.getElementById("firstNameInput").value;
 	var nameLast = document.getElementById("lastNameInput").value;
 	var email = document.getElementById("emailInput").value;
+
+	var paymentCardNumber = document.getElementById("paymentCardNumber").value;
+	var validationNumber = document.getElementById("validationNumber").value;
+	var cardholderNameFirst = document.getElementById("cardholderNameFirst").value;
+	var cardholderNameLast = document.getElementById("cardholderNameLast").value;
+	var address1 = document.getElementById("address1").value;
+	var address2 = document.getElementById("address2").value;
+	var city = document.getElementById("city").value;
+	var stateProv = document.getElementById("stateProv").value;
+	var zipcode = document.getElementById("zipcode").value;
+	var phoneNumber = document.getElementById("phoneNumber").value;
 
 	if (nameFirst.length <= 0){
 		document.getElementById("bookingStatus").innerHTML = "Invalid first name input";
@@ -195,6 +206,33 @@ function bookTrain(resultIdx){
 	} else if (email.length <= 0){
 		document.getElementById("bookingStatus").innerHTML = "Invalid email input";
 		return;
+	} else if (paymentCardNumber.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid payment card input";
+		return;
+	} else if (validationNumber.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid card validation number input";
+		return;
+	} else if (cardholderNameFirst.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid card holder name input";
+		return;
+	} else if (cardholderNameLast.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid card holder name input";
+		return;
+	} else if (address1.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid address input";
+		return;
+	} else if (city.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid city input";
+		return;
+	} else if (stateProv.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid state input";
+		return;
+	} else if (zipcode.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid zipcode input";
+		return;
+	} else if (phoneNumber.length <= 0){
+		document.getElementById("bookingStatus").innerHTML = "Invalid phone number input";
+		return;
 	}
 
 	var passengerSpecs = [{"passengerSpecID":"PAX_SPEC_0", 
@@ -204,29 +242,18 @@ function bookTrain(resultIdx){
 							"phoneNumber":"8001234567", 
 							"emailAddress":email}];
 
-	var paymentMethod = {"cardType": "CC",
-	      "cardAssociation": "AX",
-	      "number": "378282246310005",
-	      "validationNumber": "1234",
-	      "startYearMonth": "2014-08",
-	      "expirationYearMonth": "2018-08",
-	      "cardholderNameFirst": "Take",
-	      "cardholderNameLast": "Mobi",
-	      "address1": "7777 Massachusetts Ave",
-	      "address2": "Rm1234",
-	      "city": "Cambridge",
-	      "stateProv": "MA",
-	      "zipcode": "02139",
-	      "phoneNumber": "8001234567"};
+	var paymentMethod = getPaymentMethod();
 
 	options["passengerSpecs"] = passengerSpecs;
 	options["paymentMethod"] = paymentMethod;
 	options["paymentAmount"] = legPrices[resultIdx].getElementsByTagName("totalPrice")[0].textContent;
+
+	resetPaymentInfo();
 	busy();
 	// send the collected data as JSON
 	// console.log(JSON.stringify(options));
 	$.postJSON(url,options, function(data) {
-		console.log(data);
+		// console.log(data);
 		if (data.error != null){
 			document.getElementById("bookingStatus").innerHTML = data.error;
 			ready();
@@ -279,6 +306,8 @@ function bookTrain(resultIdx){
 		bookingResult.push("Order ID: " + orderID + " / Payment: " + receiptPayment);
 
 		document.getElementById("bookingResult").innerHTML = bookingResult.join("<br />");
+		resetBookingInfo();
+		hideBookingInformation();
 
 		// cancel the booking
 		var url = []
@@ -289,7 +318,7 @@ function bookTrain(resultIdx){
 
 		console.log("Cancelling booking " +  url.join(""));
 		$.get(url.join(""), function(data) {
-			console.log(data);
+			// console.log(data);
 		});
 
 		ready();
@@ -329,9 +358,42 @@ function reset() {
     var resultContainer = document.getElementById("trainResultContainer");	
     resultContainer.innerHTML = "";
 
+    resetBookingInfo();
+
+	hideBookingInformation();
+}
+
+function resetBookingInfo() {
+
     document.getElementById("firstNameInput").value = "";
 	document.getElementById("lastNameInput").value = "";
 	document.getElementById("emailInput").value = "";
+	document.getElementById("phoneNumber").value = "";
+
+	resetPaymentInfo();
+
+}
+
+function resetPaymentInfo() {
+
+	document.getElementById("cardholderNameFirst").value = "";
+	document.getElementById("cardholderNameLast").value = "";
+	document.getElementById("paymentCardNumber").value = "";
+	document.getElementById("validationNumber").value = "";
+	document.getElementById("address1").value = "";
+	document.getElementById("address2").value = "";
+	document.getElementById("city").value = "";
+	document.getElementById("stateProv").value = "";
+	document.getElementById("zipcode").value = "";
+
+}
+
+function hideBookingInformation(){
+	document.getElementById("bookingInformationContainer").style.display = "none";
+}
+
+function showBookingInformation(){
+	document.getElementById("bookingInformationContainer").style.display = "block";
 }
 
 function getDate() {
@@ -363,4 +425,53 @@ function getTime() {
         var second = '0'+second;
     }   
     return hour+':'+minute+':'+second;
+}
+
+function getPaymentMethod() {
+
+	var cardAssociation = document.getElementById("cardAssociation").value;
+	var paymentCardNumber = document.getElementById("paymentCardNumber").value;
+	var validationNumber = document.getElementById("validationNumber").value;
+	var expirationYear = document.getElementById("expirationYear").value;
+	var expirationMonth = document.getElementById("expirationMonth").value;
+	var cardholderNameFirst = document.getElementById("cardholderNameFirst").value;
+	var cardholderNameLast = document.getElementById("cardholderNameLast").value;
+	var address1 = document.getElementById("address1").value;
+	var address2 = document.getElementById("address2").value;
+	var city = document.getElementById("city").value;
+	var stateProv = document.getElementById("stateProv").value;
+	var zipcode = document.getElementById("zipcode").value;
+	var phoneNumber = document.getElementById("phoneNumber").value;
+
+	var paymentMethod = {"cardType": "CC",
+	      "cardAssociation": cardAssociation,
+	      "number": paymentCardNumber,
+	      "validationNumber": validationNumber,
+	      "startYearMonth": "2014-08",
+	      "expirationYearMonth": expirationYear+"-"+expirationMonth,
+	      "cardholderNameFirst": cardholderNameFirst,
+	      "cardholderNameLast": cardholderNameLast,
+	      "address1": address1,
+	      "address2": address2,
+	      "city": city,
+	      "stateProv": stateProv,
+	      "zipcode": zipcode,
+	      "phoneNumber": phoneNumber};
+
+	// var paymentMethod = {"cardType": "CC",
+	//       "cardAssociation": "AX",
+	//       "number": "378282246310005",
+	//       "validationNumber": "1234",
+	//       "startYearMonth": "2014-08",
+	//       "expirationYearMonth": "2018-08",
+	//       "cardholderNameFirst": "Take",
+	//       "cardholderNameLast": "Mobi",
+	//       "address1": "7777 Massachusetts Ave",
+	//       "address2": "Rm1234",
+	//       "city": "Cambridge",
+	//       "stateProv": "MA",
+	//       "zipcode": "02139",
+	//       "phoneNumber": "8001234567"};
+
+	return paymentMethod;
 }

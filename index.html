@@ -117,34 +117,96 @@
 				                    <div id="trainResultContainer" style="width:100%;display:table;border-collapse:collapse;">
 					                </div>
 				                </div>
-			                </div>
+			                </div>	                        
 
-	                        <div style="padding-top:10px;padding-bottom:10px;">
-	                            <hr>
-	                        </div>
-
-	                        <div style="display:block;vertical-align:top;">
-				                <div id="passengerInfoContainer" style="width:100%;display:table;">
-					                <div style="width:100%;display:table-row;">
-						                <div style="width:40%;display:table-cell;">
-						                	<h5 style="margin:1px">First Name</h5>
-							            </div>
-							            <div style="width:40%;display:table-cell;">
-						                	<h5 style="margin:1px">Last Name</h5>
-							            </div>
-							            <div style="width:20%;display:table-cell;">
-						                	<h5 style="margin:1px">Email</h5>
+	                        <div id="bookingInformationContainer" style="display:none;vertical-align:top;">
+		                        <div style="padding-top:10px;padding-bottom:5px;">
+		                            <hr>
+		                        </div>
+	                        	<h5 style="margin:1px;text-align:left;margin-left:15px">Passenger Information</h5>
+				                <div id="passengerInfoContainer" style="width:100%;display:table;font-size:13px">
+						            <div style="width:100%;display:table-row;">
+						            	<div style="width:100%;display:table-cell;">
+						                	<input id="firstNameInput" type="text" placeholder="Passenger First Name" style="width:46.7%;" />
+						                	<input id="lastNameInput" type="text" placeholder="Passenger Last Name" style="width:46.7%;" />
 							            </div>
 						            </div>
 						            <div style="width:100%;display:table-row;">
-						                <div style="width:40%;display:table-cell;">
-						                	<input id="firstNameInput" type="text" placeholder="First Name" style="width:90%;" />
+							            <div style="width:100%;display:table-cell;padding-top:5px">
+						                	<input id="emailInput" type="text" placeholder="Email" style="width:46.7%;" />
+						                	<input id="phoneNumber" type="text" placeholder="Phone Number" style="width:46.7%;" />
 							            </div>
-							            <div style="width:40%;display:table-cell;">
-						                	<input id="lastNameInput" type="text" placeholder="Last Name" style="width:90%;" />
+						            </div>
+						        </div> 
+						        
+						        <h5 style="margin:1px;text-align:left;margin-left:15px;margin-top:15px">Payment Information</h5>
+						        <div id="paymentInfoContainer" style="width:100%;display:table;font-size:13px;border-collapse:collapse">
+						        	<div style="width:100%;display:table-row;">
+						                <div style="width:100%;display:table-cell;">
+						                	<input id="cardholderNameFirst" type="text" placeholder="Cardholder First Name" style="width:46.7%;" />
+						                	<input id="cardholderNameLast" type="text" placeholder="Cardholder Last Name" style="width:46.7%;" />
 							            </div>
-							            <div style="width:20%;display:table-cell;">
-						                	<input id="emailInput" type="text" placeholder="Email" style="width:90%;" />
+						            </div>
+						            <div style="width:100%;display:table-row;">
+						                <div style="width:100%;display:table-cell;padding-top:5px">
+						                	<input id="paymentCardNumber" type="text" placeholder="Credit Card Number" style="width:94%;" />
+							            </div>
+						            </div>
+						            <div style="width:100%;display:table-row;">	
+						            	<div style="width:100%;display:table-cell;padding-top:5px">
+						                	<select id="cardAssociation" style="width:20%;">
+												<option value="AX">AMEX</option>
+												<option value="VI">Visa</option>
+												<option value="CA">Master</option>
+												<option value="DC">Diners</option>
+												<option value="DI">Discover</option>										  
+											</select>
+						                	<input id="validationNumber" type="text" placeholder="CVV/CID" style="width:20%;margin-left:10px;" />
+						                	<span style="margin-left:10px;">Expiration Month/Year: </span>
+											<select id="expirationMonth">
+												<option value="01">January</option>
+												<option value="02">February</option>
+												<option value="03">March</option>
+												<option value="04">April </option>
+												<option value="05">May</option>
+												<option value="06">June</option>
+												<option value="07">July</option>
+												<option value="08">August </option>
+												<option value="09">September</option>
+												<option value="10">October</option>
+												<option value="11">November</option>
+												<option value="12">December</option>											  
+											</select>
+						                	<select id="expirationYear">
+												<option value="2016">2016</option>
+												<option value="2017">2017</option>
+												<option value="2018">2018</option>
+												<option value="2019">2019</option>
+												<option value="2020">2020</option>
+												<option value="2021">2021</option>
+												<option value="2022">2022</option>
+												<option value="2023">2023</option>
+												<option value="2024">2024</option>
+												<option value="2025">2025</option>										  
+											</select>
+								        </div>							            
+						            </div>
+						            
+						            <div style="width:100%;display:table-row;">
+						                <div style="width:100%;display:table-cell;padding-top:5px">
+						                	<input id="address1" type="text" placeholder="Address Line 1" style="width:94%;" />
+							            </div>
+						            </div>
+						            <div style="width:100%;display:table-row;">
+						                <div style="width:100%;display:table-cell;padding-top:5px">
+						                	<input id="address2" type="text" placeholder="Address Line 2" style="width:94%;" />
+							            </div>
+						            </div>
+						            <div style="width:100%;display:table-row;">
+						                <div style="width:100%;display:table-cell;padding-top:5px">
+						                	<input id="city" type="text" placeholder="City" style="width:60.5%;" />
+						                	<input id="stateProv" type="text" placeholder="State" style="width:9%;" />
+						                	<input id="zipcode" type="text" placeholder="Zipcode" style="width:23%;" />
 							            </div>
 						            </div>
 					            </div>
