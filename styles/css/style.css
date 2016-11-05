@@ -298,7 +298,8 @@ i.scooter, span.scooter {
       display: none;
       width: 100%;
       z-index: 9;
-      background: white; }
+      background: white;
+      padding-bottom: 75px; }
       .search-bar .overlay {
         width: 100%; } }
   .search-bar .overlay {
