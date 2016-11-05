@@ -350,6 +350,12 @@ i, span{
     z-index: 2;
     margin-left: -20vw;
     margin-top:20px; 
+    @media screen and (max-width: 767px){
+        padding:20px;
+        width:100vw;
+        left:0;
+        margin-left:0;
+    }
     input{
         width:100%;
         margin-bottom:10px;
@@ -357,8 +363,8 @@ i, span{
     }
     .search-button{    
         height: 78px;
-        background: #333;
-        color: #ccc;
+        color: #333;
+        background: #ccc;
         width: 100%;
         font-size: 33px;
         text-align: center;
@@ -367,7 +373,21 @@ i, span{
         cursor: pointer;
     }
 }
-
+.show-filters, .hide-filters{
+    @media screen and (min-width:768px){
+        display:none;
+    }
+    z-index: 2;
+    left:0;
+    position: fixed;
+    bottom: 0;
+    padding: 15px 0;
+    background: lightskyblue;
+    color: white;
+    font-size: 18px;
+    width:100%;
+    font-weight: bold;
+}
 .search-bar{
     height:100vh;
     width:300px;
@@ -376,15 +396,24 @@ i, span{
     color:$text;
     padding:25px;
     float:left;
+    @media screen and (max-width: 767px){
+        display:none;
+        width:100%;    
+        z-index: 9;
+        background:white;    	
+        .overlay{
+            width:100%;
+        }
+    }
     .overlay{        
         opacity: .83;
-        background:white;
-        height:100%;
-        width:100%;
-        position:absolute;
-        left:0;
-        top:0;       
-        z-index: 1; 
+        background: white;
+        height: 100%;
+        width: 285px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1;
     }
     .content{            
         z-index: 1;
@@ -455,6 +484,10 @@ i, span{
     .activity-plot{
         position: absolute;
         top: -10px;         
+        &.end{
+            width: 4px;
+            border-radius: 0;
+        }
     }    
     .activity-container{
         position:relative;

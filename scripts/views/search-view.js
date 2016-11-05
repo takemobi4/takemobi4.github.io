@@ -22,7 +22,15 @@ var app = app || {};
             "click .search-button": "search",
             "click .results-bar .mode-filter": "search",
             "change .results-bar .leave-by": "search",
-            "click .search-result": "chooseResult"
+            "click .search-result": "chooseResult",
+            "click .show-filters": "showFilters",
+            "click .hide-filters": "hideFilters"
+        },
+        showFilters:function(){
+            $(".search-bar").show();
+        },
+        hideFilters:function(){
+            $(".search-bar").hide();
         },
         render: function() {
             var el = this.$el;
@@ -43,12 +51,19 @@ var app = app || {};
         search: function(){
             var origin = this.path["origin"];
             var destination = this.path["destination"];
-            if(!origin || !destination){
-                console.log("search not ready!")
+            if(!destination){
                 return false;
             }
+            if(!origin){
+                origin = this.currLocation
+                destination = destination.geometry.location
+            }
+            else{
+                origin = origin.geometry.location
+                destination = destination.geometry.location
+            }
             if(app.Global.loggedIn()){
-                var searchUser = this.getResultsForUser(this, getResults);
+                var searchUser = this.getResultsForUser(this, this.getResults);
             }
             $(".search-button i").removeClass("fa-search").addClass("fa-spinner").addClass("fa-spin")
             var results = this.getResults(this, origin, destination);
@@ -94,13 +109,13 @@ var app = app || {};
             $.get('templates/tripSearchResults.hbs', function (data) {
                 var template = Handlebars.compile(data);
                 $(".results-area").html(template(results));
+                that.setMapPolyLinesandNodes(that, results.destinations);
+                that.chooseResultById(that, results.destinations[0].id);
                 that.delegateEvents()
                 if(cb){
                     cb();
                 }
-            }, 'html');
-            
-            that.setMapPolyLinesandNodes(that, results.destinations);
+            }, 'html');            
         },
         setMapPolyLinesandNodes: function(that, destinations){
             that.clearMarkersAndPolys(that.allDestinationPolylines);
@@ -123,7 +138,6 @@ var app = app || {};
                         strokeOpacity: defaultOpacity,
                         strokeWeight: 4
                     });
-                    
                     google.maps.event.addListener(activityLine, 'click', function() {
                         that.chooseResultById(that, destination.id);                        
                     });
@@ -141,21 +155,32 @@ var app = app || {};
             that.clearMarkersAndPolys(that.markers);
             $(".search-result").removeClass("selected");
             $(".search-result").addClass("collapsed");
-            $.each(that.allDestinationPolylines, function(){
-                this.setOptions({strokeOpacity: defaultOpacity});
+            $.each(that.allDestinationPolylines, function(i, d){
+                d.setOptions({
+                    strokeOpacity: defaultOpacity,
+                });
             });
             var destinationPolylines = that.destinationPolyById[destinationId];
             var destination = that.destinations[destinationId];
-            $.each(destinationPolylines, function(){                             
-                this.setOptions({strokeOpacity: activeOpacity});
+            $.each(destinationPolylines, function(i, d){                             
+                d.setOptions({
+                    strokeOpacity: activeOpacity,
+                });
             });
             $("#" + destinationId + "").removeClass("collapsed").addClass("selected");
-            that.renderResults(that, that.fullResults, that.renderSelected.bind(that, that, "#" + destinationId + "", destination));
+            var startCoords = new google.maps.LatLng(destination.activities[0].startLat, destination.activities[0].startLon);
+            var bounds = new google.maps.LatLngBounds(startCoords);
             $.each(destination.activities, function(i, act){
                 var actCoords = that.mapPolylineToCoordinateArray(act.polyline);
                 var destMarker = that.setMarkerForActivity(that, act, actCoords);
+                var coords = new google.maps.LatLng(actCoords[0].lat, actCoords[0].lng);
+                bounds.extend(coords);
                 that.markers.push(destMarker);
-            });
+            });            
+            var lastActivity = destination.activities[destination.activities.length - 1]
+            var endCoords = new google.maps.LatLng(lastActivity.startLat, lastActivity.startLon);
+            bounds.extend(endCoords);
+            that.searchMap.fitBounds(bounds);
             var finalDestination = destination.activities[destination.activities.length - 1];
             var duration = destination.duration;
             if(destination.activities[0].type == "WAIT"){
@@ -298,7 +323,7 @@ var app = app || {};
         plotCurrentLocation: function(that, map) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    var currLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                    that.currLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                                                    
                     var currLocationmarker = new google.maps.Marker({
                         position: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
@@ -315,7 +340,7 @@ var app = app || {};
                         clickable: false,
                     });
                             
-                    map.setCenter(currLocation);
+                    map.setCenter(that.currLocation);
                     that.plotMBTAStops(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotZipCars(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotHubway(that, map, position.coords.latitude, position.coords.longitude);
@@ -340,10 +365,10 @@ var app = app || {};
         },
         setMaps: function(that){       
             var searchMap = new google.maps.Map(document.getElementById('search-map'), {
-                zoom: 14,
+                zoom: 17,
                 streetViewControl: false,
                 mapTypeControl: false
-            });     
+            });      
             that.searchMap = searchMap;                         
             var departureInput = document.getElementById('search-departure');
             var destinationInput = document.getElementById('search-arrival');
@@ -399,12 +424,18 @@ var app = app || {};
         plotZipCars: function(that, map, lat, lon){
             app.API.location_request("/Zipcar/GetLocations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
                 $.each(response.locations, function(index, data){                      
-                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};            
+                    var infowindow = new google.maps.InfoWindow({
+                        content: data.location_name + " - " + data.num_vehicles + " cars"
+                    });     
                     var marker = new google.maps.Marker({
                         position: myLatLng,                  
                         icon: "/img/zipcar-ico.png",
                         map: map,
                         title: data.location_name + " - " + data.num_vehicles + " cars",
+                    });               
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
                     });
                     that.markers.push(marker);
                 })
@@ -413,12 +444,18 @@ var app = app || {};
         plotHubway: function(that, map, lat, lon){
             app.API.location_request("/Hubway/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
                 $.each(response.stations, function(index, data){                      
-                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                
+                    var infowindow = new google.maps.InfoWindow({
+                        content: data.station_name + " - " + data.available_bikes + " available bikes"
+                    });               
                     var marker = new google.maps.Marker({
                         position: myLatLng,                  
                         icon: "/img/hubway-ico.png",
                         map: map,
                         title: data.station_name + " - " + data.available_bikes + " available bikes",
+                    });                    
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
                     });
                     that.markers.push(marker);
                 })
@@ -427,12 +464,18 @@ var app = app || {};
         plotMBTAStops: function(that, map, lat, lon){
             app.API.location_request("/MBTA/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
                 $.each(response.stations, function(index, data){                      
-                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};                 
+                    var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};          
+                    var infowindow = new google.maps.InfoWindow({
+                        content: data.stop_name
+                    });                          
                     var marker = new google.maps.Marker({
                         position: myLatLng,                       
                         icon: "/img/mbta-ico.png",
                         map: map,
                         title: data.stop_name
+                    });               
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
                     });
                     that.markers.push(marker);
                 })

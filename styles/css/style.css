@@ -249,20 +249,41 @@ i.scooter, span.scooter {
   z-index: 2;
   margin-left: -20vw;
   margin-top: 20px; }
+  @media screen and (max-width: 767px) {
+    .search-box {
+      padding: 20px;
+      width: 100vw;
+      left: 0;
+      margin-left: 0; } }
   .search-box input {
     width: 100%;
     margin-bottom: 10px;
     padding: 5px; }
   .search-box .search-button {
     height: 78px;
-    background: #333;
-    color: #ccc;
+    color: #333;
+    background: #ccc;
     width: 100%;
     font-size: 33px;
     text-align: center;
     padding-top: 15px;
     display: inline-block;
     cursor: pointer; }
+
+.show-filters, .hide-filters {
+  z-index: 2;
+  left: 0;
+  position: fixed;
+  bottom: 0;
+  padding: 15px 0;
+  background: lightskyblue;
+  color: white;
+  font-size: 18px;
+  width: 100%;
+  font-weight: bold; }
+  @media screen and (min-width: 768px) {
+    .show-filters, .hide-filters {
+      display: none; } }
 
 .search-bar {
   height: 100vh;
@@ -272,12 +293,20 @@ i.scooter, span.scooter {
   color: #333;
   padding: 25px;
   float: left; }
+  @media screen and (max-width: 767px) {
+    .search-bar {
+      display: none;
+      width: 100%;
+      z-index: 9;
+      background: white; }
+      .search-bar .overlay {
+        width: 100%; } }
   .search-bar .overlay {
     opacity: .83;
     background: white;
     height: 100%;
-    width: 100%;
-    position: absolute;
+    width: 285px;
+    position: fixed;
     left: 0;
     top: 0;
     z-index: 1; }
@@ -334,6 +363,9 @@ i.scooter, span.scooter {
   .search-bar .activity-plot {
     position: absolute;
     top: -10px; }
+    .search-bar .activity-plot.end {
+      width: 4px;
+      border-radius: 0; }
   .search-bar .activity-container {
     position: relative;
     margin-top: 10px;

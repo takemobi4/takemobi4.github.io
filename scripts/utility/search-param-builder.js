@@ -10,11 +10,11 @@ var app = app || {};
             var params = "";
 
 	        //locations
-            params += "originLat=" +  origin.geometry.location.lat() +  "&";
-            params += "originLon=" +  origin.geometry.location.lng() +  "&";
+            params += "originLat=" +  origin.lat() +  "&";
+            params += "originLon=" +  origin.lng() +  "&";
 
-            params += "destinationLat=" +  destination.geometry.location.lat() +  "&";
-            params += "destinationLon=" +  destination.geometry.location.lng() +  "&";
+            params += "destinationLat=" +  destination.lat() +  "&";
+            params += "destinationLon=" +  destination.lng() +  "&";
 
             return params;
         },

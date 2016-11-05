@@ -12,16 +12,16 @@ Handlebars.registerHelper('tripTimeLine', function(data) {
     var timeLineEntries = [];
     var percentageOfTotal = 0;
     $.each(data.activities, function(index, act){
-        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT"){
+        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT" || act.type == "LEAVING_IN"){
             return true;
         }
         var activityDurationMins = act.lowerbound;
         timeLineEntries.push({type: act.type.toLowerCase(), percent: percentageOfTotal});
         var previousPercentageOfTotal = percentageOfTotal;
         percentageOfTotal += (activityDurationMins / tripDurationMins) * 100;
-        percentageOfTotal = padPercentageToPreventCollision(percentageOfTotal, previousPercentageOfTotal);
-       
+        percentageOfTotal = padPercentageToPreventCollision(percentageOfTotal, previousPercentageOfTotal);   
     });
+    timeLineEntries.push({type: 'end', percent: percentageOfTotal});
     var timeLineHtml = "";
     var mappedResults = $.map(timeLineEntries, function(val){
         return "<div class='activity-plot " + val.type + "' style='left:" + parseInt(val.percent) + "px;'>" + getFaIcon(val.type) + "</div>";

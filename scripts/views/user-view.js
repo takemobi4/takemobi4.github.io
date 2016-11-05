@@ -245,7 +245,6 @@ var mockProfileData = {
                 el.removeClass();
                 el.addClass('user-view')
                 el.addClass('app-container')
-                that.loadCharts();
                 that.delegateEvents();                    
                 that.setMaps(that); 
             }, 'html')

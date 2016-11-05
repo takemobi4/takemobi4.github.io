@@ -103,20 +103,23 @@
                 <i class="fa fa-cc-paypal paypal"></i>
                 <i class="fa fa-cc-visa visa"></i>
             </div>
+            
+            <div class="filter visible-xs"><button class="hide-filters">Hide Filters</button></div>
         </div>
     </div>
     <div class="map-area">
         <div class="search-box">
             <div class="row">
-                <div class="col-xs-10">
-                    <input type="text" id="search-departure" placeholder="Enter a departure location"/>
+                <div class="col-xs-12 col-sm-9 col-md-10">
+                    <input type="text" id="search-departure" placeholder="Enter a departure location or blank for current location"/>
                     <input type="text" id="search-arrival" placeholder="Enter an arrival location"/>
                 </div>
-                <div class="col-xs-2">
+                <div class="col-xs-12 col-sm-3 col-md-2">
                      <span class="search-button"><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>
+        <div class="filter visible-xs"><button class="show-filters">Show Filters</button></div>
         <div id="search-map" class="map">
         </div>
     </div>    
