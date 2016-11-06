@@ -401,7 +401,7 @@ var app = app || {};
             var lat2 = ne.lat() / 57.2958;
             var lon2 = ne.lng() / 57.2958;
             var dis = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
-            return Math.round(dis);
+            return Math.ceil(dis);
         },
         getIconByType: function(type){
             switch(type){
@@ -546,7 +546,7 @@ var app = app || {};
         login: function(user, pass){
             var that = this;
             $.ajax({
-                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8080/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("Your login credentials are incorrect, please try again.");                 
@@ -560,7 +560,7 @@ var app = app || {};
         createAccount: function(user, pass){
             var that = this;
             $.ajax({
-                url: "http://api.takemobi.com:8080/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8080/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("There was an error creating your account");                       
