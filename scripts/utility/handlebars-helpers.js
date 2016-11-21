@@ -7,12 +7,26 @@ Handlebars.registerHelper('absVal', function(value) {
     return Math.abs(value).toFixed(2);;
 });
 
+Handlebars.registerHelper('round', function(value) {
+    return Math.round(value * 100) / 100;
+});
+
+Handlebars.registerHelper('noDecimal', function(value) {
+    return Math.ceil(value); 
+});
+
+Handlebars.registerHelper('getTime', function(val){
+    var x = new Date(val) 
+    var ampm = x.getHours() >= 12 ? "pm" : "am";
+    return (x.getHours() > 12 ? x.getHours() - 12 : x.getHours()) + ":" +  checkTime(x.getMinutes()) + " " + ampm
+});
+
 Handlebars.registerHelper('tripTimeLine', function(data) {
     var tripDurationMins = data.duration;
     var timeLineEntries = [];
     var percentageOfTotal = 0;
     $.each(data.activities, function(index, act){
-        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT" || act.type == "LEAVING_IN"){
+        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT" || act.type == "LEAVING_IN" || act.type == "CHECKIN" || act.type == "CHECKOUT"){
             return true;
         }
         var activityDurationMins = act.lowerbound;
@@ -34,7 +48,7 @@ Handlebars.registerHelper('detailTimeLine', function(data) {
     var timeLineEntries = [];
     var totalMinutes = 0;
     $.each(data.activities, function(index, act){
-        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT"){            
+        if(act.type == "WAIT" || act.type == "PARK" || act.type == "RESERVE" || act.type == "PAYMENT" || act.type == "CHECKIN" || act.type == "CHECKOUT"){            
             totalMinutes += act.lowerbound;
             return true;
         }
@@ -63,12 +77,19 @@ function getFaIcon(type){
             return faBlock("car")
         case "bike":
             return faBlock("bicycle")
+        case "park":
+            return faBlock("street-view")
         case "taxi":
             return faBlock("taxi")
         default:
             return "";
     }
 }
+
+
+Handlebars.registerHelper('iconBlock', function(type){
+    return "<div class='activity-item  " + type.toLowerCase() + "'>" + getFaIcon(type.toLowerCase()) + "</div>";
+});
 
 function faBlock(ico){
     return "<i class='fa fa-" + ico + "'></i>"

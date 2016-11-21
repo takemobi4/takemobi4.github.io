@@ -63,7 +63,7 @@ var app = app || {};
                 that.setUserAndRedirect(user);
             });
         },
-        setUserAndRedirect(user, key){
+        setUserAndRedirect: function(user, key){
             $.cookie('userID', user);
             $.cookie('userKey', key);
             window.location.hash = 'user';                

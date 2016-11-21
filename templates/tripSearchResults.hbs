@@ -1,5 +1,7 @@
 {{#each destinations}}
     <div class="search-result" id="{{id}}">
+        <div class="result-container">
+
         <p class="heading">
             <span class="pull-left">
             {{#if isFastSolution}}
@@ -14,8 +16,10 @@
             <span class="pull-right">
                 <strong>${{absVal cost}}</strong>
             </span>
+            <div class="timeline-container">
             <div class="trip-timeline">
                 {{{tripTimeLine this}}}
+            </div>
             </div>
             <p class="departure"><strong>
                 {{#is activities.0.type "WAIT"}}  
@@ -25,6 +29,7 @@
                 {{/is}}
             </strong></p>
         </p>
+        </div>
     </div>
 {{else}}
     <p class="empty">No results! Sorry.</p>

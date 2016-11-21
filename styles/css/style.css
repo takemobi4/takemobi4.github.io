@@ -135,7 +135,7 @@ i.taxi, span.taxi {
   color: #FF9900; }
 
 i.bus, span.bus {
-  color: #FF6633; }
+  color: #CC9966; }
 
 i.walk, span.walk {
   color: #FF0066; }
@@ -239,10 +239,13 @@ i.scooter, span.scooter {
   top: 0;
   width: 100%;
   height: 100%; }
+  @media screen and (min-width: 768px) {
+    #search-map {
+      padding-left: 330px; } }
 
 .search-box {
   width: 40vw;
-  height: 300px;
+  height: 78px;
   position: absolute;
   left: 60vw;
   top: 0;
@@ -287,11 +290,11 @@ i.scooter, span.scooter {
 
 .search-bar {
   height: 100vh;
-  width: 300px;
+  width: 330px;
   position: relative;
   overflow-y: auto;
   color: #333;
-  padding: 25px;
+  padding: 5px;
   float: left; }
   @media screen and (max-width: 767px) {
     .search-bar {
@@ -303,14 +306,17 @@ i.scooter, span.scooter {
       .search-bar .overlay {
         width: 100%; } }
   .search-bar .overlay {
-    opacity: .83;
+    opacity: .2;
     background: white;
     height: 100%;
-    width: 285px;
+    width: 330px;
     position: fixed;
     left: 0;
     top: 0;
     z-index: 1; }
+    @media screen and (min-width: 768px) {
+      .search-bar .overlay {
+        background-image: url("../../img/map-overlay.png"); } }
   .search-bar .content {
     z-index: 1;
     position: relative; }
@@ -335,38 +341,59 @@ i.scooter, span.scooter {
     float: right; }
   .search-bar.results-bar .filter-bar:first-child {
     display: none; }
+  .search-bar.results-bar .hidden-results {
+    display: none; }
+  .search-bar.results-bar .mode-name {
+    display: none; }
+  .search-bar.results-bar .fa-circle:before {
+    content: "\f068" !important; }
   .search-bar .results-area {
-    height: 50vh;
-    overflow: auto; }
+    height: 80vh;
+    overflow: auto;
+    overflow-x: hidden; }
   .search-bar .search-result {
-    padding: 5px;
     width: 100%;
     margin-bottom: 10px;
     background: white;
     clear: both;
     display: inline-block;
     cursor: pointer; }
+    .search-bar .search-result .mode-result {
+      padding: 0 6px; }
+    .search-bar .search-result .result-container {
+      padding: 6px;
+      border: 1px solid #ccc; }
     .search-bar .search-result.selected {
-      border: 2px solid #000;
       background: #fafafa; }
+    .search-bar .search-result p {
+      margin: 0; }
     .search-bar .search-result .heading {
       float: left;
-      width: 100%; }
+      width: 100%;
+      padding: 0 5px;
+      margin: 0 0 5px 0; }
     .search-bar .search-result .departure {
-      text-align: right; }
+      text-align: right;
+      margin: 0 0; }
+  .search-bar .timeline-container {
+    overflow: hidden;
+    width: 100%;
+    height: 30px; }
   .search-bar .trip-timeline {
     width: 100%;
     height: 1px;
     position: relative;
-    border: 3px dotted #333;
-    margin: 5px 0 15px 0;
+    border: 4px solid #7f7f7f;
+    margin: 10px 0 15px 0;
     float: left; }
   .search-bar .activity-plot {
     position: absolute;
     top: -10px; }
     .search-bar .activity-plot.end {
-      width: 4px;
-      border-radius: 0; }
+      border-radius: 0;
+      width: 100%;
+      background: white;
+      border-left: 3px solid #333; }
   .search-bar .activity-container {
     position: relative;
     margin-top: 10px;
@@ -401,35 +428,134 @@ i.scooter, span.scooter {
     text-align: center;
     color: black;
     font-size: 10px; }
-    .search-bar .activity-plot.train, .search-bar .activity-item.train {
-      background-color: #660066; }
-    .search-bar .activity-plot.bike, .search-bar .activity-item.bike {
-      background-color: #33CCCC; }
-    .search-bar .activity-plot.drive, .search-bar .activity-item.drive {
-      background-color: #3366CC; }
-    .search-bar .activity-plot.walk, .search-bar .activity-item.walk {
-      background-image: url("../../img/walk-ico.png");
-      background-color: #FF0066;
-      background-size: 75% 75%;
-      background-position: center 48%;
-      background-repeat: no-repeat;
-      background-image: url("../../img/walk-ico.png"); }
-    .search-bar .activity-plot.taxi, .search-bar .activity-item.taxi {
-      background-color: yellow; }
-    .search-bar .activity-plot.transit, .search-bar .activity-item.transit {
-      background-image: url("../../img/mbta-ico.png"); }
-    .search-bar .activity-plot.uber, .search-bar .activity-item.uber {
-      background-image: url("../../img/uber-ico.png"); }
-    .search-bar .activity-plot.lyft, .search-bar .activity-item.lyft {
-      background-image: url("../../img/lyft-ico.png"); }
-    .search-bar .activity-plot.zipcar, .search-bar .activity-item.zipcar {
-      background-image: url("../../img/zipcar-ico.png"); }
-    .search-bar .activity-plot.hubway, .search-bar .activity-item.hubway {
-      background-image: url("../../img/hubway-ico.png"); }
   .search-bar .btn-book {
     font-weight: bold;
     width: 100%;
     text-align: center; }
+
+.activity-plot.train, .activity-item.train {
+  background-color: #660066; }
+
+.activity-plot.bike, .activity-item.bike {
+  background-color: #33CCCC; }
+
+.activity-plot.drive, .activity-item.drive {
+  background-color: #3366CC; }
+
+.activity-plot.walk, .activity-item.walk {
+  background-image: url("../../img/walk-ico.png");
+  background-color: #FF0066;
+  background-size: 75% 75%;
+  background-position: center 48%;
+  background-repeat: no-repeat;
+  background-image: url("../../img/walk-ico.png"); }
+
+.activity-plot.taxi, .activity-item.taxi {
+  background-color: yellow; }
+
+.activity-plot.transit, .activity-item.transit {
+  background-image: url("../../img/mbta-ico.png"); }
+
+.activity-plot.uber, .activity-item.uber {
+  background-image: url("../../img/uber-ico.png"); }
+
+.activity-plot.lyft, .activity-item.lyft {
+  background-image: url("../../img/lyft-ico.png"); }
+
+.activity-plot.zipcar, .activity-item.zipcar {
+  background-image: url("../../img/zipcar-ico.png"); }
+
+.activity-plot.hubway, .activity-item.hubway {
+  background-image: url("../../img/hubway-ico.png"); }
+
+.mode-result:last-child .mode-content {
+  border-bottom: 1px solid black; }
+
+.mode-result .mode-heading {
+  border-top: 1px solid black;
+  font-size: 11px;
+  padding: 0px 5px 0px 17px;
+  position: relative;
+  width: 92%;
+  float: right;
+  border-left: 7px solid #7f7f7f;
+  margin-right: 9px;
+  border-right: 1px solid black; }
+  .mode-result .mode-heading:before {
+    content: '';
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background: white;
+    position: absolute;
+    left: -15px;
+    border: 1px solid black;
+    top: -4px;
+    z-index: 999; }
+
+.mode-result .mode-content {
+  border-left: 7px solid #7f7f7f;
+  margin-left: 18px;
+  margin-top: 0px;
+  padding-left: 0;
+  border-right: 1px solid black;
+  width: 92%;
+  display: flex;
+  align-items: center; }
+  .mode-result .mode-content.vendor .mode-icon {
+    background: white; }
+  .mode-result .mode-content .mode-icon {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 55px; }
+  .mode-result .mode-content.train, .mode-result .mode-content.transit {
+    background-color: #660066; }
+  .mode-result .mode-content.bike {
+    background-color: #33CCCC; }
+  .mode-result .mode-content.park {
+    background: darkgreen; }
+  .mode-result .mode-content.hubway {
+    background-image: url("../../img/hubway-ico.png"); }
+  .mode-result .mode-content.zipcar {
+    background-image: url("../../img/zipcar-ico.png"); }
+  .mode-result .mode-content.drive {
+    background-color: #3366CC; }
+  .mode-result .mode-content.walk {
+    background-color: #FF0066; }
+  .mode-result .mode-content.taxi {
+    background-color: yellow; }
+  .mode-result .mode-content .mode-description {
+    padding: 0 0 0 11px;
+    font-size: 11px;
+    color: white;
+    font-weight: bold;
+    width: 90%; }
+    .mode-result .mode-content .mode-description p {
+      margin: 0; }
+  .mode-result .mode-content .activity-item {
+    height: 32px;
+    width: 32px;
+    margin: 15px 0;
+    color: white;
+    border: 1px solid white; }
+    .mode-result .mode-content .activity-item .fa {
+      font-size: 18px;
+      padding: 6px 0px 5px 0; }
+    .mode-result .mode-content .activity-item.walk {
+      background-image: url("../../img/walk-ico-light.png");
+      background-size: 75% 75%;
+      background-position: center 48%;
+      background-repeat: no-repeat; }
+    .mode-result .mode-content .activity-item.transit {
+      background-image: url("../../img/mbta-ico.png"); }
+    .mode-result .mode-content .activity-item.uber {
+      background-image: url("../../img/uber-ico.png"); }
+    .mode-result .mode-content .activity-item.lyft {
+      background-image: url("../../img/lyft-ico.png"); }
+    .mode-result .mode-content .activity-item.zipcar {
+      background-image: url("../../img/zipcar-ico.png"); }
+    .mode-result .mode-content .activity-item.hubway {
+      background-image: url("../../img/hubway-ico.png"); }
 
 .mode-filter {
   float: left;
@@ -470,3 +596,57 @@ input[type=range]:focus {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #222; }
+
+.error {
+  color: red;
+  font-family: georgia;
+  padding-top: 5px;
+  display: block; }
+
+.update-success {
+  width: 100%;
+  background: green;
+  box-shadow: 0px 0px 2px 1px #000;
+  padding: 5px 20px;
+  float: left;
+  display: block;
+  color: white;
+  font-weight: bold;
+  margin: 0 0 20px 0; }
+
+.arrivals-list {
+  width: 500px;
+  overflow: hidden;
+  max-height: 30vh;
+  overflow-y: scroll; }
+  .arrivals-list .col-xs-6 {
+    padding: 0; }
+  .arrivals-list .vehicle-stop {
+    padding: 0 10px;
+    float: left;
+    border-right: 1px solid white; }
+  .arrivals-list .vehicle-stop:last-child {
+    border: none; }
+  .arrivals-list .arrival {
+    width: 100%;
+    float: left;
+    padding: 10px 20px;
+    margin: 5px 6px;
+    color: white;
+    font-size: 18px; }
+    .arrivals-list .arrival.subway.red {
+      background-color: #CC3333; }
+    .arrivals-list .arrival.subway.blue {
+      background-color: #3366CC; }
+    .arrivals-list .arrival.subway.green, .arrivals-list .arrival.subway.green-e, .arrivals-list .arrival.subway.green-b, .arrivals-list .arrival.subway.green-c, .arrivals-list .arrival.subway.green-d {
+      background-color: #339966; }
+    .arrivals-list .arrival.subway.orange {
+      background-color: #CC6600; }
+    .arrivals-list .arrival.subway.blue {
+      background-color: #990066; }
+    .arrivals-list .arrival.bus {
+      background-color: #CC9966; }
+    .arrivals-list .arrival.train, .arrivals-list .arrival.commuter {
+      background-color: #660066; }
+    .arrivals-list .arrival.subway {
+      background-color: #000; }

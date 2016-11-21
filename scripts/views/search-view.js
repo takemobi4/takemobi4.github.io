@@ -41,12 +41,22 @@ var app = app || {};
                 that.initializeFilterValues(that);
                 that.delegateEvents();                
                 that.setMaps(that); 
+                that.initializeRentalCarSession(that);
             }, 'html').done(function(){                
             })       
             $("body").removeClass("modal-open"); 
             this.$el.removeClass();
             this.$el.addClass('search-view');
             this.$el.addClass('app-container');
+        },
+        initializeRentalCarSession: function(that){
+            app.API.location_request("/Sabre/cars/availability?parameters", "",
+            function(user){  
+                if(user.ERROR){
+                    return [];                        
+                }
+                return getResults(that, origin, destination, user)
+            }, function(){ return false; });               
         },
         search: function(){
             var origin = this.path["origin"];
@@ -77,7 +87,7 @@ var app = app || {};
                 return getResults(that, origin, destination, user)
             }, function(){ return false; });                        
         },
-        getResults(that, origin, destination, user){
+        getResults: function(that, origin, destination, user){
             var params = "";
             var locationParams = app.SearchParamBuilder.getLocationSearchParams(origin, destination);
             var searchUIParams = app.SearchParamBuilder.getUISearchParams();
@@ -167,7 +177,9 @@ var app = app || {};
                     strokeOpacity: activeOpacity,
                 });
             });
+            var selectedView = that.buildSelectedView(destination);
             $("#" + destinationId + "").removeClass("collapsed").addClass("selected");
+            $("#" + destinationId).html(selectedView);
             var startCoords = new google.maps.LatLng(destination.activities[0].startLat, destination.activities[0].startLon);
             var bounds = new google.maps.LatLngBounds(startCoords);
             $.each(destination.activities, function(i, act){
@@ -188,6 +200,32 @@ var app = app || {};
             }
             that.setDestinationMarker(finalDestination.endLat, finalDestination.endLon, duration, that);
         },
+    	buildSelectedView: function(destination){
+            var markup = "";
+            $.each(destination.activities, function(i, act){                
+                if(act.type == "WAIT" || act.type == "LEAVING_IN" || act.type == "RESERVE" || act.type == "PAYMENT"){            
+                    return true;                             
+                }
+                if(act.type == "CHECKIN" || act.type == "CHECKOUT"){
+                    var isBike = act.name.toLowerCase().indexOf("bike") != -1;
+                    name = isBike ? "bike_" + act.type : "zipcar_" + act.type;
+                    act.type = isBike ? "HUBWAY" : "ZIPCAR"
+                }
+                else{
+                    name = act.type;
+                }
+                $.ajax({
+                    url: 'templates/TripModes/' + name + '.hbs',
+                    async:false,
+                    dataType: "html",
+                    success: function(data){
+                        var template = Handlebars.compile(data);
+                        markup += template(act);
+                    }
+                });
+            });
+            return markup;
+        },        
         renderSelected: function(that, el, destination){
             $.get('templates/selectedResult.hbs', function (data) {
                 var template = Handlebars.compile(data);
@@ -344,7 +382,7 @@ var app = app || {};
                     that.plotMBTAStops(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotZipCars(that, map, position.coords.latitude, position.coords.longitude);
                     that.plotHubway(that, map, position.coords.latitude, position.coords.longitude);
-                    /*that.listenerHandle = map.addListener('bounds_changed', function() {
+                    that.listenerHandle = map.addListener('bounds_changed', function() {
                         var cachedLat = map.getCenter().lat();
                         var cachedLon = map.getCenter().lng();                        
                         window.setTimeout(function() {
@@ -359,7 +397,7 @@ var app = app || {};
                                 that.plotMBTAStops(that, map, mapPos.lat(), mapPos.lng());                                
                             }
                         }, 500);
-                    });*/
+                    });
                 });
             }
         },
@@ -463,7 +501,8 @@ var app = app || {};
         },
         plotMBTAStops: function(that, map, lat, lon){
             app.API.location_request("/MBTA/GetStations", "lat=" + lat + "&lon=" + lon + "&radius=" + that.getRadius(map), function(response) {
-                $.each(response.stations, function(index, data){                      
+                $.each(response.stations, function(index, data){         
+                    var station = data;             
                     var myLatLng = {lat: parseFloat(data.lat), lng: parseFloat(data.lon)};          
                     var infowindow = new google.maps.InfoWindow({
                         content: data.stop_name
@@ -475,7 +514,34 @@ var app = app || {};
                         title: data.stop_name
                     });               
                     marker.addListener('click', function() {
-                        infowindow.open(map, marker);
+                        var stationId = data.stop_id;
+                        app.API.location_request("/MBTA/GetNextArrivals", "stop_id=" + stationId, function(response) {       
+                            var infowindow = new google.maps.InfoWindow({
+                                content: "<div class='arrivals-list'>" + $.map(response.arrivals, function(arrival){
+
+                                    return $.map(arrival.directions, function(direction){
+
+                                        var mode = arrival.mode_name;
+                                        var title = direction.vehicles[0].trip_headsign;                                
+                                        if(mode.toLowerCase() == "bus"){
+                                            title = mode + " - " + arrival.route_id  + " - " + title;
+                                        }
+                                        var displaySpan =  "<span class='arrival " + mode.toLowerCase() + " " + arrival.route_id.toLowerCase() + "'><span class='col-xs-6'>" + title + "</span>";
+                                        displaySpan +="<span class='col-xs-6'>";
+                                        $.map(direction.vehicles, function(vehicle){
+                                            var minutesAway = parseInt(vehicle.pre_away / 60);
+                                            displaySpan += "<span class='vehicle-stop'>" + minutesAway + "<sup>mins</sup></span>"
+                                        });
+                                        displaySpan += "</span></span>"
+                                        return displaySpan;
+                                    });
+
+
+                                    
+                                }).join("") + "</div>"
+                            });                          
+                            infowindow.open(map, marker);
+                        });
                     });
                     that.markers.push(marker);
                 })
@@ -546,7 +612,7 @@ var app = app || {};
         login: function(user, pass){
             var that = this;
             $.ajax({
-                url: "https://api.takemobi.com:8080/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8443/profilemanager/V2/Authentication/Login?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("Your login credentials are incorrect, please try again.");                 
@@ -560,7 +626,7 @@ var app = app || {};
         createAccount: function(user, pass){
             var that = this;
             $.ajax({
-                url: "https://api.takemobi.com:8080/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
+                url: "https://api.takemobi.com:8443/profilemanager/V2/Authentication/CreateUser?userID=" + user + "&password=" + pass
             }).done(function(response) {
                 if(response.ERROR){
                     return alert("There was an error creating your account");                       
@@ -568,7 +634,7 @@ var app = app || {};
                 that.login(user, pass);
             });
         },
-        setUserAndRedirect(user, key){
+        setUserAndRedirect: function (user, key){
             $.cookie('userID', user);
             $.cookie('userKey', key);
             window.location.hash = 'user';                

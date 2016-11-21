@@ -6,10 +6,11 @@ var app = app || {};
     
 	var MobiRouter = Backbone.Router.extend({
 		routes: {
-            'user': 'editUser',
+            'user(/:action)': 'editUser',
             "search": "defaultRoute",
             "login": "loginRoute",
             "questions": "quesionsRoute",
+            "edit-user": "editUserRoute",
             "": "defaultRoute" 
 		},
         defaultRoute : function() {
@@ -22,12 +23,15 @@ var app = app || {};
         quesionsRoute : function() {
             this.view = new app.UserQuestionsView();
         },
-        editUser : function() {
+        editUserRoute : function() {
+            this.view = new app.UserEditView();
+        },
+        editUser : function(action) {
             var user = $.cookie("userID");
             if(!user){
                 this.loginRoute();
             }
-            this.view = new app.UserView();
+            this.view = new app.UserView({action: action});
         }
 	});
 

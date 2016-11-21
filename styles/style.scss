@@ -10,7 +10,7 @@ $car: #3366CC;
 $train: #660066;
 $walk:  #FF0066;
 $rocket: #AA0022;
-$bus:   #FF6633;
+$bus:   #CC9966;
 $taxi:  #FF9900;
 $subway: #000;
 $scooter: #bbcc44;
@@ -339,11 +339,14 @@ i, span{
     top: 0;
     width:100%;
     height:100%;
+    @media screen and (min-width:768px){
+        padding-left:330px;
+    }
 }
 
 .search-box{
     width: 40vw;
-    height: 300px;
+    height: 78px;
     position: absolute;
     left: 60vw;
     top: 0;
@@ -390,11 +393,11 @@ i, span{
 }
 .search-bar{
     height:100vh;
-    width:300px;
+    width:330px;
     position:relative;
     overflow-y:auto;
     color:$text;
-    padding:25px;
+    padding:5px;
     float:left;
     @media screen and (max-width: 767px){
         display:none;
@@ -407,14 +410,17 @@ i, span{
         }
     }
     .overlay{        
-        opacity: .83;
+        opacity: .2;
         background: white;
         height: 100%;
-        width: 285px;
+        width: 330px;
         position: fixed;
         left: 0;
         top: 0;
         z-index: 1;
+        @media screen and (min-width:768px){        
+            background-image: url("../../img/map-overlay.png");
+        }
     }
     .content{            
         z-index: 1;
@@ -449,45 +455,77 @@ i, span{
         .filter-bar:first-child{
             display:none;
         }        
+        .hidden-results{
+            display:none;
+        }
+        .mode-name{
+            display:none;
+        }
+        .fa-circle{
+            &:before{                
+                content: "\f068" !important;
+            }
+        }
     }
     .results-area{            
-        height: 50vh;
+        height: 80vh;
         overflow: auto;
+        overflow-x: hidden;
     }
     .search-result{
-        padding: 5px;
         width: 100%;
         margin-bottom: 10px;
         background: white;
         clear: both;
         display: inline-block;
         cursor:pointer;
+        .mode-result{
+            padding:0 6px;
+        }
+        .result-container{
+            padding:6px;
+            border:1px solid #ccc;
+        }
         &.selected{
-            border:2px solid #000;
             background:#fafafa;
+        }
+        p{
+        margin:0;
         }
         .heading{
             float:left;
             width:100%;
+            padding: 0 5px;
+            margin: 0 0 5px 0;
         }
         .departure{
             text-align:right;
+            margin:0 0;
         }
+    }
+
+    .timeline-container{
+        overflow: hidden;
+        width: 100%;
+        height: 30px;
     }
     .trip-timeline{
         width:100%;
         height:1px;
         position:relative;
-        border:3px dotted $text;
-        margin: 5px 0 15px 0;
+        border:4px solid #7f7f7f;
+        margin: 10px 0 15px 0;
         float: left;        
     }
     .activity-plot{
         position: absolute;
         top: -10px;         
         &.end{
-            width: 4px;
-            border-radius: 0;
+            
+          border-radius: 0;
+          width: 100%;
+          background: white;
+          border-left: 3px solid #333;
         }
     }    
     .activity-container{
@@ -528,49 +566,166 @@ i, span{
         background-color:$text;
         text-align:center;
         color:black;
-        font-size:10px;         
-        &.train{
-            background-color:$train;
-        }
-        &.bike{
-            background-color:$bicycle;
-        }
-        &.drive{
-            background-color:$car;    
-        }
-        &.walk{
-            background-image: url("../../img/walk-ico.png");
-            background-color: $walk;
-            background-size: 75% 75%;
-            background-position: center 48%;
-            background-repeat: no-repeat;
-            background-image:url("../../img/walk-ico.png")
-        }
-        &.taxi{
-            background-color:yellow;    
-        }
-        &.transit{
-            background-image:url("../../img/mbta-ico.png")
-        }
-        &.uber{
-            background-image:url("../../img/uber-ico.png")
-        }
-        &.lyft{
-            background-image:url("../../img/lyft-ico.png")
-        }
-        &.zipcar{
-            background-image:url("../../img/zipcar-ico.png")
-        }
-        &.hubway{
-            background-image:url("../../img/hubway-ico.png")
-        }
-    }
+        font-size:10px;
+    }         
     .btn-book{
         font-weight:bold;
         width:100%;
         text-align:center;
     }
 
+}
+.activity-plot, .activity-item{
+    &.train{
+        background-color:$train;
+    }
+    &.bike{
+        background-color:$bicycle;
+    }
+    &.drive{
+        background-color:$car;    
+    }
+    &.walk{
+        background-image: url("../../img/walk-ico.png");
+        background-color: $walk;
+        background-size: 75% 75%;
+        background-position: center 48%;
+        background-repeat: no-repeat;
+        background-image:url("../../img/walk-ico.png")
+    }
+    &.taxi{
+        background-color:yellow;    
+    }
+    &.transit{
+        background-image:url("../../img/mbta-ico.png")
+    }
+    &.uber{
+        background-image:url("../../img/uber-ico.png")
+    }
+    &.lyft{
+        background-image:url("../../img/lyft-ico.png")
+    }
+    &.zipcar{
+        background-image:url("../../img/zipcar-ico.png")
+    }
+    &.hubway{
+        background-image:url("../../img/hubway-ico.png")
+    }
+}
+.mode-result:last-child .mode-content{
+    border-bottom: 1px solid black;
+}
+.mode-result{    
+    .mode-heading{
+        border-top: 1px solid black;
+        font-size: 11px;
+        padding: 0px 5px 0px 17px;
+        position: relative;
+        width: 92%;
+        float: right;
+        border-left: 7px solid #7f7f7f;
+        margin-right: 9px;
+        border-right:1px solid black;
+        &:before{
+            content: '';
+            width: 25px;
+            height: 25px;
+            border-radius: 100%;
+            background: white;
+            position: absolute;
+            left: -15px;
+            border: 1px solid black;
+            top: -4px;
+            z-index: 999;
+        }
+    }
+
+    .mode-content{
+        border-left: 7px solid #7f7f7f;
+        margin-left: 18px;
+        margin-top: 0px;
+        padding-left: 0;
+        border-right:1px solid black;
+        width: 92%;
+        display: flex;
+        align-items: center;
+        &.vendor{
+            .mode-icon{
+                background:white;
+            }
+        }
+        .mode-icon{
+            padding-left:10px;
+            padding-right:10px;
+            width:55px;
+        }
+        &.train, &.transit{
+            background-color:$train;
+        }
+        &.bike{
+            background-color:$bicycle;
+        }
+        &.park{
+            background: darkgreen;
+        }
+        &.hubway{
+            background-image:url("../../img/hubway-ico.png")
+        }
+        &.zipcar{
+            background-image:url("../../img/zipcar-ico.png")
+        }
+        &.drive{
+            background-color:$car;    
+        }
+        &.walk{
+            background-color: $walk;
+        }
+        &.taxi{
+            background-color:yellow;    
+        }
+        .mode-description{
+            padding:0 0 0 11px;
+            font-size:11px;
+            color:white;
+            font-weight:bold;
+            width:90%;
+            p{
+                margin:0;
+            }
+        }
+        .activity-item{
+            height: 32px;
+            width: 32px;
+            margin: 15px 0;
+            color: white;
+            border:1px solid white;
+            .fa{
+                font-size: 18px;
+                padding: 6px 0px 5px 0;
+            }
+            &.walk{
+                background-image: url("../../img/walk-ico-light.png");
+                background-size: 75% 75%;
+                background-position: center 48%;
+                background-repeat: no-repeat;
+            }
+            &.transit{
+                background-image:url("../../img/mbta-ico.png")
+            }
+            &.uber{
+                background-image:url("../../img/uber-ico.png")
+            }
+            &.lyft{
+                background-image:url("../../img/lyft-ico.png")
+            }
+            &.zipcar{
+                background-image:url("../../img/zipcar-ico.png")
+            }
+            &.hubway{
+                background-image:url("../../img/hubway-ico.png")
+            }
+        }
+    }
 }
 .mode-filter{
     float:left;
@@ -625,4 +780,76 @@ input[type=range]:focus {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #222;
+}
+
+.error{
+    color: red;
+    font-family: georgia;
+    padding-top: 5px;
+    display: block;
+}
+
+.update-success{
+    width: 100%;
+    background: green;
+    box-shadow: 0px 0px 2px 1px #000;
+    padding: 5px 20px;
+    float: left;
+    display: block;
+    color: white;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+
+.arrivals-list{
+    width: 500px;
+    overflow: hidden;
+    max-height: 30vh;
+    overflow-y: scroll;
+    .col-xs-6{
+        padding:0;
+    }
+    .vehicle-stop{
+        padding:0 10px;
+        float:left;
+        border-right:1px solid white;
+    }
+    .vehicle-stop:last-child{
+        border:none;
+    }
+    .arrival{
+        width: 100%;
+        float: left;
+        padding: 10px 20px;
+        margin: 5px 6px;
+
+        color: white;
+        font-size: 18px;   
+        &.subway{
+            &.red{
+                background-color:#CC3333;
+            }
+            &.blue{
+                background-color:#3366CC;
+            }
+            &.green, &.green-e, &.green-b, &.green-c, &.green-d{
+                background-color:#339966;
+            }   
+            &.orange{
+                background-color:#CC6600;
+            }
+            &.blue{
+                background-color:#990066;
+            }
+        }             
+        &.bus{
+            background-color:$bus;
+        }
+        &.train, &.commuter{
+            background-color:$train;
+        }
+        &.subway{
+            background-color:$subway;
+        }
+    }
 }

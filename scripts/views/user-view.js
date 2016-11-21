@@ -27,9 +27,9 @@ var mockProfileData = {
     app.UserView = Backbone.View.extend({
         tagName: "div",
         el: '.app-container',
-        initialize: function(loginRequired) {
+        initialize: function(action) {
             $("body").html(this.el);
-            this.render();
+            this.render(action);
         },
         events : {
             "click .submit-poi": "addPointOfInterest",
@@ -99,7 +99,7 @@ var mockProfileData = {
                 that.infoWindow.close();
             });
         },
-        render: function() {
+        render: function(action) {
             var el = this.$el; 
             var that = this;
             app.API.request("/Profile/RetrieveProfile", "",
@@ -110,7 +110,7 @@ var mockProfileData = {
                 if(!response.HASCHARLIECARD && !response.HASCHARLIEPASS && !response.HASHUBWAYMEMBERSHIP && !response.HASZIPCARPLAN10){
                     response.HASNOMEMBERSHIPS = true;
                 }
-                that.renderView(el, response, that);
+                that.renderView(el, response, that, action);  
             }, function(){
                 return window.location.hash = 'login';  
             });
@@ -237,7 +237,7 @@ var mockProfileData = {
         errPosition: function(){
             alert("There was an error with retreiving your location.");
         },
-        renderView: function(el, userData, that){      
+        renderView: function(el, userData, that, action){      
             $.get('templates/user.hbs', function (data) {
                 var template = Handlebars.compile(data);
                 $("body").removeClass("modal-open"); 
@@ -245,8 +245,12 @@ var mockProfileData = {
                 el.removeClass();
                 el.addClass('user-view')
                 el.addClass('app-container')
+                el.addClass('question-view')
                 that.delegateEvents();                    
                 that.setMaps(that); 
+                if(action.action){                                  
+                    $("<div class='update-success'>You have successfully updated your profile!</div>").insertAfter(".user-desc");                
+                }
             }, 'html')
         }
     });
